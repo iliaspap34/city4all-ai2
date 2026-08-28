@@ -1,1 +1,175 @@
+<!doctype html>
+<html lang="el">
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>City4All AI</title>
+
+  <script type="module" src="https://js.arcgis.com/5.1/"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fa;
+    }
+
+    calcite-shell {
+      width: 100%;
+      height: 100%;
+    }
+
+    arcgis-map {
+      width: 100%;
+      height: 100%;
+    }
+
+    #assistant-panel {
+      --calcite-shell-panel-width: 430px;
+      width: 430px;
+      max-width: 45vw;
+    }
+
+    calcite-panel {
+      height: 100%;
+    }
+
+    arcgis-assistant {
+      height: 100%;
+      width: 100%;
+    }
+
+    @media (max-width: 800px) {
+
+      #assistant-panel {
+        width: 100%;
+        max-width: 100%;
+        height: 50%;
+      }
+
+      arcgis-map {
+        height: 50%;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+  <calcite-shell>
+
+    <!-- CITY4ALL MAP -->
+    <arcgis-map
+      id="city4all-map"
+      item-id="969e9e5433dd4b968cf06793dc7b7aca">
+
+      <arcgis-zoom slot="top-left"></arcgis-zoom>
+
+      <arcgis-expand slot="top-left">
+        <arcgis-legend></arcgis-legend>
+      </arcgis-expand>
+
+    </arcgis-map>
+
+
+    <!-- AI PANEL -->
+    <calcite-shell-panel
+      slot="panel-end"
+      id="assistant-panel"
+      width="l">
+
+      <calcite-panel>
+
+        <arcgis-assistant
+          id="city4all-assistant"
+          reference-element="#city4all-map"
+
+          heading="City4All AI"
+
+          description="Ρώτησέ με φυσικά για προσβάσιμα σημεία που έχουν καταγραφεί στο City4All."
+
+          entry-message="Γεια σου! 👋 Είμαι ο AI Assistant του City4All. Μπορώ να σε βοηθήσω να εξερευνήσεις τα σημεία προσβασιμότητας στον χάρτη. Ρώτησέ με τι ψάχνεις."
+
+          log-enabled
+          copy-enabled>
+
+          <!-- Navigation -->
+          <arcgis-assistant-navigation-agent>
+          </arcgis-assistant-navigation-agent>
+
+          <!-- DATA EXPLORATION -->
+          <arcgis-assistant-data-exploration-agent>
+          </arcgis-assistant-data-exploration-agent>
+
+          <!-- Help -->
+          <arcgis-assistant-help-agent>
+          </arcgis-assistant-help-agent>
+
+        </arcgis-assistant>
+
+      </calcite-panel>
+
+    </calcite-shell-panel>
+
+  </calcite-shell>
+
+
+  <script type="module">
+
+    const assistant =
+      document.querySelector("#city4all-assistant");
+
+    const map =
+      document.querySelector("#city4all-map");
+
+
+    /*
+     * ΠΡΟΤΕΙΝΟΜΕΝΕΣ ΕΡΩΤΗΣΕΙΣ
+     */
+
+    assistant.suggestedPrompts = [
+
+      "Βρες μου προσβάσιμα φαρμακεία στην Ηλιούπολη.",
+
+      "Βρες μου καφετέριες με ράμπα.",
+
+      "Ποια σημεία έχουν είσοδο χωρίς σκαλοπάτια;",
+
+      "Βρες μου προσβάσιμα σημεία στην Καλλιθέα.",
+
+      "Ποια σημεία είναι κατάλληλα για χρήστη αναπηρικού αμαξιδίου;"
+
+    ];
+
+
+    /*
+     * Όταν φορτώσει ο χάρτης
+     */
+
+    map.addEventListener(
+      "arcgisViewReadyChange",
+      () => {
+
+        console.log(
+          "City4All map loaded."
+        );
+
+      }
+    );
+
+
+  </script>
+
+</body>
+</html>
