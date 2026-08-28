@@ -1,12 +1,14 @@
 <!doctype html>
+
 <html lang="el">
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1, viewport-fit=cover"
+
+>
 
   <meta name="theme-color" content="#0b5cab">
 
@@ -233,7 +235,7 @@
 
       border-top: 1px solid #e7ebf0;
 
-      background: rgba(255,255,255,.98);
+      background: rgba(255, 255, 255, .98);
     }
 
     #input-row {
@@ -775,259 +777,275 @@
       }
     }
   </style>
+
 </head>
 
 <body>
 
 <div id="app">
 
-  <!-- MAP -->
+  <!-- ================================
+       MAP
+       ================================ -->
 
-  <arcgis-map
-    id="city4all-map"
-    item-id="969e9e5433dd4b968cf06793dc7b7aca">
+<arcgis-map
+ id="city4all-map"
+ item-id="969e9e5433dd4b968cf06793dc7b7aca">
 
-    <arcgis-zoom slot="top-left"></arcgis-zoom>
+```
+<arcgis-zoom slot="top-left"></arcgis-zoom>
 
-    <arcgis-expand slot="top-left">
-      <arcgis-legend></arcgis-legend>
-    </arcgis-expand>
+<arcgis-expand slot="top-left">
+  <arcgis-legend></arcgis-legend>
+</arcgis-expand>
+```
 
   </arcgis-map>
 
-
-  <!-- CHAT -->
+  <!-- ================================
+       CHAT
+       ================================ -->
 
   <section id="chat-panel">
 
-    <header id="chat-header">
+```
+<header id="chat-header">
 
-      <div id="ai-icon">
-        🤖
-      </div>
+  <div id="ai-icon">
+    🤖
+  </div>
 
-      <div>
-        <div id="chat-title">
-          City4All AI
-        </div>
-
-        <div id="chat-subtitle">
-          Βρες προσβάσιμα σημεία φυσικά
-        </div>
-      </div>
-
-      <div id="connection-status"></div>
-
-    </header>
-
-
-    <div id="messages">
-
-      <div class="message ai">
-        Γεια σου! 👋
-
-        Είμαι ο AI Assistant του City4All.
-
-        Μπορείς να με ρωτήσεις για σημεία που έχουν καταγραφεί στο City4All, όπως φαρμακεία, καταστήματα, καφετέριες και χαρακτηριστικά προσβασιμότητας.
-
-        Π.χ. «Βρες μου προσβάσιμα φαρμακεία στην Ηλιούπολη.»
-      </div>
-
+  <div>
+    <div id="chat-title">
+      City4All AI
     </div>
 
-
-    <div id="quick-prompts">
-
-      <button class="quick-prompt">
-        Φαρμακεία στην Ηλιούπολη
-      </button>
-
-      <button class="quick-prompt">
-        Καφετέριες με ράμπα
-      </button>
-
-      <button class="quick-prompt">
-        Είσοδος χωρίς σκαλοπάτια
-      </button>
-
-      <button class="quick-prompt">
-        Προσβάσιμα σημεία
-      </button>
-
+    <div id="chat-subtitle">
+      Βρες προσβάσιμα σημεία φυσικά
     </div>
+  </div>
+
+  <div
+    id="connection-status"
+    title="Κατάσταση σύνδεσης">
+  </div>
+
+</header>
 
 
-    <div id="chat-input-area">
+<div id="messages">
 
-      <div id="input-row">
+  <div class="message ai">
+    Γεια σου! 👋
 
-        <button
-          id="voice-button"
-          class="icon-button"
-          title="Μίλησε">
-          🎤
-        </button>
+    Είμαι ο AI Assistant του City4All.
 
-        <textarea
-          id="message-input"
-          rows="1"
-          placeholder="Ρώτησε το City4All AI..."></textarea>
+    Μπορείς να με ρωτήσεις για σημεία που έχουν καταγραφεί στο City4All, όπως φαρμακεία, καταστήματα, καφετέριες και χαρακτηριστικά προσβασιμότητας.
 
-        <button
-          id="send-button"
-          class="icon-button"
-          title="Αποστολή">
-          ➤
-        </button>
+    Π.χ. «Βρες μου προσβάσιμα φαρμακεία στην Ηλιούπολη.»
+  </div>
 
-      </div>
+</div>
 
-      <div id="input-hint">
-        Enter για αποστολή · Shift + Enter για νέα γραμμή
-      </div>
 
-    </div>
+<div id="quick-prompts">
+
+  <button class="quick-prompt">
+    Φαρμακεία στην Ηλιούπολη
+  </button>
+
+  <button class="quick-prompt">
+    Καφετέριες με ράμπα
+  </button>
+
+  <button class="quick-prompt">
+    Είσοδος χωρίς σκαλοπάτια
+  </button>
+
+  <button class="quick-prompt">
+    Προσβάσιμα σημεία
+  </button>
+
+</div>
+
+
+<div id="chat-input-area">
+
+  <div id="input-row">
+
+    <button
+      id="voice-button"
+      class="icon-button"
+      title="Μίλησε">
+      🎤
+    </button>
+
+    <textarea
+      id="message-input"
+      rows="1"
+      placeholder="Ρώτησε το City4All AI..."></textarea>
+
+    <button
+      id="send-button"
+      class="icon-button"
+      title="Αποστολή">
+      ➤
+    </button>
+
+  </div>
+
+  <div id="input-hint">
+    Enter για αποστολή · Shift + Enter για νέα γραμμή
+  </div>
+
+</div>
+```
 
   </section>
 
-
-  <!-- RESULTS -->
+  <!-- ================================
+       RESULTS
+       ================================ -->
 
   <section id="results-panel">
 
-    <div id="results-header">
+```
+<div id="results-header">
 
-      <div>
+  <div>
 
-        <div id="results-title">
-          📍 Αποτελέσματα City4All
-        </div>
-
-        <div id="results-count">
-          Πραγματικές καταχωρίσεις
-        </div>
-
-      </div>
-
-      <button
-        id="close-results"
-        class="route-button secondary"
-        style="width:34px;height:34px;padding:0;"
-        aria-label="Κλείσιμο">
-        ×
-      </button>
-
+    <div id="results-title">
+      📍 Αποτελέσματα City4All
     </div>
 
-    <div id="results-list"></div>
+    <div id="results-count">
+      Πραγματικές καταχωρίσεις
+    </div>
+
+  </div>
+
+  <button
+    id="close-results"
+    class="route-button secondary"
+    style="width:34px;height:34px;padding:0;"
+    aria-label="Κλείσιμο">
+    ×
+  </button>
+
+</div>
+
+<div id="results-list"></div>
+```
 
   </section>
 
-
-  <!-- ROUTING -->
+  <!-- ================================
+       ROUTING
+       ================================ -->
 
   <section id="routing-panel">
 
-    <div id="routing-header">
+```
+<div id="routing-header">
 
-      <div>
+  <div>
 
-        <div id="routing-title">
-          🧭 Πλοήγηση City4All
-        </div>
+    <div id="routing-title">
+      🧭 Πλοήγηση City4All
+    </div>
 
-        <div id="routing-subtitle">
-          ArcGIS Location Services
-        </div>
+    <div id="routing-subtitle">
+      ArcGIS Location Services
+    </div>
 
+  </div>
+
+  <button
+    id="close-route"
+    class="route-button secondary"
+    style="width:34px;height:34px;padding:0;">
+    ×
+  </button>
+
+</div>
+
+
+<div id="route-content">
+
+  <div id="selected-place">
+
+    <strong>
+      📍 Προορισμός
+    </strong>
+
+    Επίλεξε ένα σημείο από τα αποτελέσματα.
+
+  </div>
+
+
+  <div class="route-buttons">
+
+    <button
+      id="route-button"
+      class="route-button"
+      disabled>
+      🚗 Βρες διαδρομή
+    </button>
+
+    <button
+      id="location-button"
+      class="route-button secondary">
+      📍 Η θέση μου
+    </button>
+
+  </div>
+
+
+  <div id="route-status">
+    Επίλεξε ένα σημείο και μετά ζήτησε διαδρομή.
+  </div>
+
+
+  <div id="route-summary">
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Απόσταση
       </div>
 
-      <button
-        id="close-route"
-        class="route-button secondary"
-        style="width:34px;height:34px;padding:0;">
-        ×
-      </button>
+      <div
+        class="summary-value"
+        id="distance">
+        —
+      </div>
 
     </div>
 
 
-    <div id="route-content">
+    <div class="summary-card">
 
-      <div id="selected-place">
-
-        <strong>
-          📍 Προορισμός
-        </strong>
-
-        Επίλεξε ένα σημείο από τα αποτελέσματα.
-
+      <div class="summary-label">
+        Χρόνος
       </div>
 
-
-      <div class="route-buttons">
-
-        <button
-          id="route-button"
-          class="route-button"
-          disabled>
-          🚗 Βρες διαδρομή
-        </button>
-
-        <button
-          id="location-button"
-          class="route-button secondary">
-          📍 Η θέση μου
-        </button>
-
+      <div
+        class="summary-value"
+        id="duration">
+        —
       </div>
-
-
-      <div id="route-status">
-        Επίλεξε ένα σημείο και μετά ζήτησε διαδρομή.
-      </div>
-
-
-      <div id="route-summary">
-
-        <div class="summary-card">
-
-          <div class="summary-label">
-            Απόσταση
-          </div>
-
-          <div
-            class="summary-value"
-            id="distance">
-            —
-          </div>
-
-        </div>
-
-
-        <div class="summary-card">
-
-          <div class="summary-label">
-            Χρόνος
-          </div>
-
-          <div
-            class="summary-value"
-            id="duration">
-            —
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div id="directions"></div>
 
     </div>
+
+  </div>
+
+
+  <div id="directions"></div>
+
+</div>
+```
 
   </section>
-
 
   <div id="map-help">
     Επίλεξε ένα σημείο για πληροφορίες και διαδρομή.
@@ -1035,19 +1053,19 @@
 
 </div>
 
-
 <script type="module">
 
 /* =====================================================
-   CONFIG
+   CONFIGURATION
    ===================================================== */
 
 /*
-   ΠΡΟΣΟΧΗ:
+  IMPORTANT:
 
-   Δεν βάζουμε κανένα API KEY εδώ.
+  Δεν υπάρχει κανένα API key εδώ.
 
-   Όλα τα secrets βρίσκονται στον Cloudflare Worker.
+  Τα OPENAI_API_KEY και ARCGIS_API_KEY
+  πρέπει να βρίσκονται στον Cloudflare Worker.
 */
 
 const API_BASE_URL =
@@ -1091,7 +1109,7 @@ const [
 
 
 /* =====================================================
-   ELEMENTS
+   DOM ELEMENTS
    ===================================================== */
 
 const map =
@@ -1196,6 +1214,10 @@ map.addEventListener(
       return;
     }
 
+    if (routeGraphicsLayer) {
+      return;
+    }
+
     routeGraphicsLayer =
       new GraphicsLayer({
         title: "City4All Navigation"
@@ -1227,7 +1249,10 @@ async function checkConnection() {
       await fetch(
         `${API_BASE_URL}/health`,
         {
-          method: "GET"
+          method: "GET",
+          headers: {
+            "Accept": "application/json"
+          }
         }
       );
 
@@ -1237,9 +1262,20 @@ async function checkConnection() {
         "offline"
       );
 
+      connectionStatus.title =
+        "City4All AI: συνδεδεμένο";
+
+      console.log(
+        "City4All Worker online."
+      );
+
       return true;
 
     }
+
+    throw new Error(
+      `HTTP ${response.status}`
+    );
 
   }
   catch (error) {
@@ -1249,13 +1285,16 @@ async function checkConnection() {
       error
     );
 
+    connectionStatus.classList.add(
+      "offline"
+    );
+
+    connectionStatus.title =
+      "City4All AI: εκτός σύνδεσης";
+
+    return false;
+
   }
-
-  connectionStatus.classList.add(
-    "offline"
-  );
-
-  return false;
 
 }
 
@@ -1263,7 +1302,7 @@ checkConnection();
 
 
 /* =====================================================
-   CHAT
+   CHAT EVENTS
    ===================================================== */
 
 sendButton.addEventListener(
@@ -1310,6 +1349,10 @@ quickPrompts.forEach(
 );
 
 
+/* =====================================================
+   SEND CHAT MESSAGE
+   ===================================================== */
+
 async function sendCurrentMessage() {
 
   const message =
@@ -1332,8 +1375,7 @@ async function sendCurrentMessage() {
       "ai loading"
     );
 
-  sendButton.disabled =
-    true;
+  sendButton.disabled = true;
 
   try {
 
@@ -1345,6 +1387,9 @@ async function sendCurrentMessage() {
 
           headers: {
             "Content-Type":
+              "application/json",
+
+            "Accept":
               "application/json"
           },
 
@@ -1373,6 +1418,7 @@ async function sendCurrentMessage() {
 
       const serverMessage =
         data?.error ||
+        data?.message ||
         `HTTP ${response.status}`;
 
       throw new Error(
@@ -1385,12 +1431,18 @@ async function sendCurrentMessage() {
 
     const answer =
       data?.answer ||
+      data?.response ||
       "Δεν έλαβα απάντηση από το City4All AI.";
 
     addMessage(
       answer,
       "ai"
     );
+
+    /*
+      Αν ο Worker επιστρέψει features,
+      τα εμφανίζουμε στον χάρτη.
+    */
 
     const features =
       Array.isArray(
@@ -1430,15 +1482,14 @@ async function sendCurrentMessage() {
 
     addMessage(
       "⚠️ Δεν μπόρεσα να επικοινωνήσω με το City4All AI.\n\n" +
-      "Έλεγξε ότι ο Cloudflare Worker είναι ενεργός και ότι έχουν ρυθμιστεί τα OPENAI_API_KEY και ARCGIS_API_KEY.",
+      "Έλεγξε ότι ο Cloudflare Worker είναι ενεργός και ότι τα OPENAI_API_KEY και ARCGIS_API_KEY έχουν ρυθμιστεί ως Worker Secrets.",
       "ai"
     );
 
   }
   finally {
 
-    sendButton.disabled =
-      false;
+    sendButton.disabled = false;
 
     messageInput.focus();
 
@@ -1446,6 +1497,10 @@ async function sendCurrentMessage() {
 
 }
 
+
+/* =====================================================
+   ADD MESSAGE
+   ===================================================== */
 
 function addMessage(
   text,
@@ -1513,19 +1568,26 @@ function renderResults(
       const name =
         attributes.field_2 ||
         attributes.name ||
+        attributes.NAME ||
         "Σημείο City4All";
 
       const type =
         attributes.field_3 ||
+        attributes.type ||
+        attributes.TYPE ||
         "Καταχώριση";
 
       const accessibility =
         attributes.field_4 ||
+        attributes.accessibility ||
+        attributes.ACCESSIBILITY ||
         "Δεν υπάρχουν διαθέσιμες πληροφορίες προσβασιμότητας.";
 
       const area =
         attributes.field_9 ||
         attributes.dimos ||
+        attributes.Dimos ||
+        attributes.area ||
         "";
 
       card.innerHTML = `
@@ -1614,17 +1676,24 @@ async function showFeaturesOnMap(
       .map(
         feature => {
 
+          const geometry =
+            feature.geometry;
+
           const point =
             new Point({
 
               x:
-                feature.geometry.x,
+                Number(
+                  geometry.x
+                ),
 
               y:
-                feature.geometry.y,
+                Number(
+                  geometry.y
+                ),
 
               spatialReference:
-                feature.geometry.spatialReference ||
+                geometry.spatialReference ||
                 {
                   wkid: 4326
                 }
@@ -1688,7 +1757,10 @@ async function showFeaturesOnMap(
         searchGraphics.map(
           graphic =>
             graphic.geometry
-        )
+        ),
+        {
+          duration: 900
+        }
       );
 
     }
@@ -1737,10 +1809,14 @@ async function selectFeature(
     new Point({
 
       x:
-        geometry.x,
+        Number(
+          geometry.x
+        ),
 
       y:
-        geometry.y,
+        Number(
+          geometry.y
+        ),
 
       spatialReference:
         geometry.spatialReference ||
@@ -1758,10 +1834,13 @@ async function selectFeature(
   const name =
     attributes.field_2 ||
     attributes.name ||
+    attributes.NAME ||
     "Σημείο City4All";
 
   const type =
     attributes.field_3 ||
+    attributes.type ||
+    attributes.TYPE ||
     "Σημείο";
 
   selectedPlace.innerHTML = `
@@ -1799,18 +1878,30 @@ async function selectFeature(
 
   if (view) {
 
-    await view.goTo({
+    try {
 
-      target:
-        destinationPoint,
+      await view.goTo({
 
-      zoom:
-        Math.max(
-          view.zoom,
-          17
-        )
+        target:
+          destinationPoint,
 
-    });
+        zoom:
+          Math.max(
+            view.zoom || 15,
+            17
+          )
+
+      });
+
+    }
+    catch (error) {
+
+      console.warn(
+        "Could not focus destination.",
+        error
+      );
+
+    }
 
   }
 
@@ -1884,7 +1975,7 @@ function setDestinationGraphic() {
 
 
 /* =====================================================
-   LOCATION
+   USER LOCATION
    ===================================================== */
 
 locationButton.addEventListener(
@@ -1982,6 +2073,10 @@ function getUserLocation(
 
 }
 
+
+/* =====================================================
+   USER LOCATION GRAPHIC
+   ===================================================== */
 
 function addUserLocationGraphic() {
 
@@ -2123,6 +2218,9 @@ async function calculateRoute() {
           headers: {
 
             "Content-Type":
+              "application/json",
+
+            "Accept":
               "application/json"
 
           },
@@ -2151,6 +2249,7 @@ async function calculateRoute() {
 
       throw new Error(
         data?.error ||
+        data?.message ||
         `Route HTTP ${response.status}`
       );
 
@@ -2174,12 +2273,16 @@ async function calculateRoute() {
 
     const kilometers =
       Number(
-        data.distance?.kilometers || 0
+        data.distance?.kilometers ||
+        data.distance?.value ||
+        0
       );
 
     const minutes =
       Number(
-        data.duration?.minutes || 0
+        data.duration?.minutes ||
+        data.duration?.value ||
+        0
       );
 
     distanceElement.textContent =
@@ -2258,7 +2361,7 @@ async function calculateRoute() {
 
 
 /* =====================================================
-   DRAW ROUTE FROM WORKER
+   DRAW ROUTE
    ===================================================== */
 
 function drawReturnedRoute(
@@ -2341,8 +2444,9 @@ function displayDirections(
     (step, index) => {
 
       const text =
-        step.text ||
-        "";
+        typeof step === "string"
+          ? step
+          : step.text || "";
 
       if (!text) {
         return;
@@ -2409,11 +2513,17 @@ function clearRouteOnly() {
   directionsElement.innerHTML =
     "";
 
+  distanceElement.textContent =
+    "—";
+
+  durationElement.textContent =
+    "—";
+
 }
 
 
 /* =====================================================
-   CLEAR SEARCH
+   CLEAR SEARCH GRAPHICS
    ===================================================== */
 
 function clearSearchGraphics() {
@@ -2439,7 +2549,7 @@ function clearSearchGraphics() {
 
 
 /* =====================================================
-   CLOSE BUTTONS
+   CLOSE RESULTS
    ===================================================== */
 
 closeResults.addEventListener(
@@ -2459,6 +2569,10 @@ function closeResultsPanel() {
 
 }
 
+
+/* =====================================================
+   CLOSE ROUTING
+   ===================================================== */
 
 closeRoute.addEventListener(
   "click",
@@ -2507,7 +2621,7 @@ closeRoute.addEventListener(
 
 
 /* =====================================================
-   VOICE
+   VOICE SEARCH
    ===================================================== */
 
 let recognition =
@@ -2540,9 +2654,7 @@ function startVoice() {
   if (recognition) {
 
     try {
-
       recognition.stop();
-
     }
     catch {}
 
@@ -2569,17 +2681,19 @@ function startVoice() {
   recognition.continuous =
     false;
 
-
   voiceButton.classList.add(
     "recording"
   );
+
+  voiceButton.title =
+    "Σταμάτημα ακρόασης";
 
 
   recognition.onresult =
     event => {
 
       const transcript =
-        event.results[0][0].transcript;
+        event.results?.[0]?.[0]?.transcript;
 
       if (transcript) {
 
@@ -2616,6 +2730,9 @@ function startVoice() {
         "recording"
       );
 
+      voiceButton.title =
+        "Μίλησε";
+
       recognition =
         null;
 
@@ -2637,6 +2754,9 @@ function startVoice() {
       "recording"
     );
 
+    voiceButton.title =
+      "Μίλησε";
+
     recognition =
       null;
 
@@ -2655,6 +2775,10 @@ window.city4allSpeak =
     if (
       !("speechSynthesis" in window)
     ) {
+      return;
+    }
+
+    if (!text) {
       return;
     }
 
@@ -2828,6 +2952,10 @@ function escapeHTML(
 window.city4allAsk =
   function(message) {
 
+    if (!message) {
+      return;
+    }
+
     messageInput.value =
       message;
 
@@ -2836,8 +2964,17 @@ window.city4allAsk =
   };
 
 
+/* =====================================================
+   INITIALIZATION
+   ===================================================== */
+
 console.log(
   "City4All AI frontend initialized."
+);
+
+console.log(
+  "API:",
+  API_BASE_URL
 );
 
 </script>
