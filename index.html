@@ -42,10 +42,6 @@
       height: 100dvh;
     }
 
-    /* ================================
-       MAP
-       ================================ */
-
     #city4all-map {
       position: absolute;
       inset: 0;
@@ -54,7 +50,7 @@
     }
 
     /* ================================
-       CHAT PANEL
+       CHAT
        ================================ */
 
     #chat-panel {
@@ -132,6 +128,10 @@
       border-radius: 50%;
 
       background: #16a34a;
+    }
+
+    #connection-status.offline {
+      background: #dc2626;
     }
 
     /* ================================
@@ -296,6 +296,11 @@
 
     .icon-button:hover {
       background: #e3eaf2;
+    }
+
+    .icon-button:disabled {
+      opacity: .5;
+      cursor: not-allowed;
     }
 
     #send-button {
@@ -681,11 +686,6 @@
 
     @media (max-width: 900px) {
 
-      html,
-      body {
-        overflow: hidden;
-      }
-
       #chat-panel {
         top: auto;
         right: 0;
@@ -781,9 +781,7 @@
 
 <div id="app">
 
-  <!-- ================================
-       ARC GIS MAP
-       ================================ -->
+  <!-- MAP -->
 
   <arcgis-map
     id="city4all-map"
@@ -798,9 +796,7 @@
   </arcgis-map>
 
 
-  <!-- ================================
-       CUSTOM CITY4ALL AI CHAT
-       ================================ -->
+  <!-- CHAT -->
 
   <section id="chat-panel">
 
@@ -895,9 +891,7 @@
   </section>
 
 
-  <!-- ================================
-       RESULTS
-       ================================ -->
+  <!-- RESULTS -->
 
   <section id="results-panel">
 
@@ -930,9 +924,7 @@
   </section>
 
 
-  <!-- ================================
-       ROUTING
-       ================================ -->
+  <!-- ROUTING -->
 
   <section id="routing-panel">
 
@@ -1050,14 +1042,22 @@
    CONFIG
    ===================================================== */
 
-const API_URL =
+/*
+   ΠΡΟΣΟΧΗ:
+
+   Δεν βάζουμε κανένα API KEY εδώ.
+
+   Όλα τα secrets βρίσκονται στον Cloudflare Worker.
+*/
+
+const API_BASE_URL =
   "https://city4all-ai2-api.ilias-pap-net.workers.dev";
 
-const ARCGIS_API_KEY =
-  "AAPTaD7A65_Vgx-jCw-9SU6rdkQ..A1KRnfVGYUsPWgNPYbwxY1fnUW_fWVzT3mfxeFiRVlXGdWalCFVhEK1XzanKsJPWKQWgRZYa-86dXm49mVN4KXc5cGfUZJFrxeZeeRd9cFAHHeACB0RcEh-XW0NH_93IFfpbCVro1EK4R4-u6YV-FuiZyX0VLZbCQ-VNzhFh6ivxHUNi7eWRMN0GfP9-VYEbBM4YbgU5vkAgO-6AwrsBgLHUCLV6CF0iVgGDNkNVHNRUfUR2TFuX_7Pa-t4f60d5y85WAT1_hCD0zLzg";
+const CHAT_URL =
+  `${API_BASE_URL}/chat`;
 
-const ROUTE_URL =
-  "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+const ROUTE_API_URL =
+  `${API_BASE_URL}/route`;
 
 
 /* =====================================================
@@ -1065,25 +1065,11 @@ const ROUTE_URL =
    ===================================================== */
 
 const [
-  route,
-  RouteParameters,
-  FeatureSet,
   Graphic,
   Point,
-  GraphicsLayer
+  GraphicsLayer,
+  Polyline
 ] = await Promise.all([
-
-  $arcgis.import(
-    "@arcgis/core/rest/route.js"
-  ),
-
-  $arcgis.import(
-    "@arcgis/core/rest/support/RouteParameters.js"
-  ),
-
-  $arcgis.import(
-    "@arcgis/core/rest/support/FeatureSet.js"
-  ),
 
   $arcgis.import(
     "@arcgis/core/Graphic.js"
@@ -1095,6 +1081,10 @@ const [
 
   $arcgis.import(
     "@arcgis/core/layers/GraphicsLayer.js"
+  ),
+
+  $arcgis.import(
+    "@arcgis/core/geometry/Polyline.js"
   )
 
 ]);
@@ -1167,6 +1157,9 @@ const directionsElement =
 const mapHelp =
   document.querySelector("#map-help");
 
+const connectionStatus =
+  document.querySelector("#connection-status");
+
 
 /* =====================================================
    STATE
@@ -1185,6 +1178,8 @@ let userGraphic = null;
 let selectedFeature = null;
 
 let searchGraphics = [];
+
+let routeGraphic = null;
 
 
 /* =====================================================
@@ -1221,16 +1216,59 @@ map.addEventListener(
 
 
 /* =====================================================
+   CONNECTION CHECK
+   ===================================================== */
+
+async function checkConnection() {
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_BASE_URL}/health`,
+        {
+          method: "GET"
+        }
+      );
+
+    if (response.ok) {
+
+      connectionStatus.classList.remove(
+        "offline"
+      );
+
+      return true;
+
+    }
+
+  }
+  catch (error) {
+
+    console.warn(
+      "Connection check failed:",
+      error
+    );
+
+  }
+
+  connectionStatus.classList.add(
+    "offline"
+  );
+
+  return false;
+
+}
+
+checkConnection();
+
+
+/* =====================================================
    CHAT
    ===================================================== */
 
 sendButton.addEventListener(
   "click",
-  () => {
-
-    sendCurrentMessage();
-
-  }
+  sendCurrentMessage
 );
 
 
@@ -1294,13 +1332,14 @@ async function sendCurrentMessage() {
       "ai loading"
     );
 
-  sendButton.disabled = true;
+  sendButton.disabled =
+    true;
 
   try {
 
     const response =
       await fetch(
-        API_URL,
+        CHAT_URL,
         {
           method: "POST",
 
@@ -1316,24 +1355,36 @@ async function sendCurrentMessage() {
         }
       );
 
+    let data = null;
+
+    try {
+
+      data =
+        await response.json();
+
+    }
+    catch {
+
+      data = null;
+
+    }
+
     if (!response.ok) {
 
-      const errorText =
-        await response.text();
+      const serverMessage =
+        data?.error ||
+        `HTTP ${response.status}`;
 
       throw new Error(
-        `Worker ${response.status}: ${errorText}`
+        serverMessage
       );
 
     }
 
-    const data =
-      await response.json();
-
     loading.remove();
 
     const answer =
-      data.answer ||
+      data?.answer ||
       "Δεν έλαβα απάντηση από το City4All AI.";
 
     addMessage(
@@ -1342,7 +1393,9 @@ async function sendCurrentMessage() {
     );
 
     const features =
-      Array.isArray(data.features)
+      Array.isArray(
+        data?.features
+      )
         ? data.features
         : [];
 
@@ -1376,7 +1429,8 @@ async function sendCurrentMessage() {
     loading.remove();
 
     addMessage(
-      "⚠️ Δεν μπόρεσα να επικοινωνήσω με το City4All AI. Έλεγξε ότι ο Worker είναι ενεργός και ότι το OPENAI_API_KEY έχει ρυθμιστεί σωστά.",
+      "⚠️ Δεν μπόρεσα να επικοινωνήσω με το City4All AI.\n\n" +
+      "Έλεγξε ότι ο Cloudflare Worker είναι ενεργός και ότι έχουν ρυθμιστεί τα OPENAI_API_KEY και ARCGIS_API_KEY.",
       "ai"
     );
 
@@ -1433,15 +1487,11 @@ function renderResults(
     "";
 
   resultsCount.textContent =
-    `${features.length} σημείο${
+    `${features.length} ${
       features.length === 1
-        ? ""
-        : "α"
-    } βρέθηκε${
-      features.length === 1
-        ? ""
-        : "καν"
-    }`;
+        ? "σημείο"
+        : "σημεία"
+    } βρέθηκαν`;
 
   features.forEach(
     (feature, index) => {
@@ -1742,6 +1792,8 @@ async function selectFeature(
   routeStatus.textContent =
     "Πάτησε «Βρες διαδρομή» για διαδρομή από τη θέση σου.";
 
+  clearRouteOnly();
+
   const view =
     map.view;
 
@@ -2023,20 +2075,6 @@ async function calculateRoute() {
 
   }
 
-  if (
-    !ARCGIS_API_KEY ||
-    ARCGIS_API_KEY.includes(
-      "ΒΑΛΕ_ΕΔΩ"
-    )
-  ) {
-
-    routeStatus.innerHTML =
-      "⚠️ Βάλε το ArcGIS API key σου στο <strong>ARCGIS_API_KEY</strong>.";
-
-    return;
-
-  }
-
   routeButton.disabled =
     true;
 
@@ -2050,155 +2088,128 @@ async function calculateRoute() {
 
   try {
 
-    const stops =
-      new FeatureSet({
+    const body = {
 
-        features: [
+      origin: {
 
-          new Graphic({
-            geometry:
-              userLocationPoint
-          }),
+        latitude:
+          userLocationPoint.latitude,
 
-          new Graphic({
-            geometry:
-              destinationPoint
-          })
+        longitude:
+          userLocationPoint.longitude
 
-        ]
+      },
 
-      });
+      destination: {
 
+        latitude:
+          destinationPoint.latitude,
 
-    const routeParams =
-      new RouteParameters({
+        longitude:
+          destinationPoint.longitude
 
-        apiKey:
-          ARCGIS_API_KEY,
+      }
 
-        stops,
+    };
 
-        returnRoutes:
-          true,
+    const response =
+      await fetch(
+        ROUTE_API_URL,
+        {
 
-        returnDirections:
-          true,
+          method:
+            "POST",
 
-        returnStops:
-          true,
+          headers: {
 
-        directionsLanguage:
-          "el",
+            "Content-Type":
+              "application/json"
 
-        outputSpatialReference:
-          {
-            wkid: 4326
-          }
+          },
 
-      });
+          body:
+            JSON.stringify(body)
 
-
-    const result =
-      await route.solve(
-        ROUTE_URL,
-        routeParams
+        }
       );
 
+    let data = null;
+
+    try {
+
+      data =
+        await response.json();
+
+    }
+    catch {
+
+      data = null;
+
+    }
+
+    if (!response.ok) {
+
+      throw new Error(
+        data?.error ||
+        `Route HTTP ${response.status}`
+      );
+
+    }
 
     if (
-      !result ||
-      !result.routeResults ||
-      !result.routeResults.length
+      !data ||
+      !data.success
     ) {
 
       throw new Error(
+        data?.error ||
         "Δεν βρέθηκε διαδρομή."
       );
 
     }
 
-
-    const routeResult =
-      result.routeResults[0];
-
-    const routeGraphic =
-      routeResult.route;
-
-
-    routeGraphic.symbol = {
-
-      type:
-        "simple-line",
-
-      color:
-        "#0b5cab",
-
-      width:
-        5,
-
-      style:
-        "solid"
-
-    };
-
-
-    routeGraphicsLayer.add(
-      routeGraphic
+    drawReturnedRoute(
+      data.geometry
     );
 
-
-    const attributes =
-      routeGraphic.attributes || {};
-
-
-    const totalMiles =
+    const kilometers =
       Number(
-        attributes.Total_Miles || 0
+        data.distance?.kilometers || 0
       );
 
-    const totalKilometers =
-      totalMiles * 1.609344;
-
-
-    const travelMinutes =
+    const minutes =
       Number(
-        attributes.Total_TravelTime || 0
+        data.duration?.minutes || 0
       );
-
 
     distanceElement.textContent =
-      totalKilometers > 0
+      kilometers > 0
         ? formatDistance(
-            totalKilometers
+            kilometers
           )
         : "—";
 
-
     durationElement.textContent =
       formatDuration(
-        travelMinutes
+        minutes
       );
-
 
     routeSummary.style.display =
       "grid";
 
-
     displayDirections(
-      routeResult.directions
+      data.steps || []
     );
-
 
     routeStatus.textContent =
       "✅ Η διαδρομή υπολογίστηκε.";
 
-
     const view =
       map.view;
 
-
     if (
       view &&
+      routeGraphic &&
       routeGraphic.geometry &&
       routeGraphic.geometry.extent
     ) {
@@ -2225,8 +2236,10 @@ async function calculateRoute() {
 
       <br><br>
 
-      Έλεγξε ότι το ArcGIS API key έχει ενεργό
-      <strong>Routing / Location Services</strong>.
+      ${escapeHTML(
+        error.message ||
+        "Άγνωστο σφάλμα."
+      )}
 
     `;
 
@@ -2245,26 +2258,74 @@ async function calculateRoute() {
 
 
 /* =====================================================
+   DRAW ROUTE FROM WORKER
+   ===================================================== */
+
+function drawReturnedRoute(
+  geometry
+) {
+
+  if (
+    !geometry ||
+    !routeGraphicsLayer
+  ) {
+
+    throw new Error(
+      "Ο Worker δεν επέστρεψε γεωμετρία διαδρομής."
+    );
+
+  }
+
+  clearRouteOnly();
+
+  const routeGeometry =
+    new Polyline(
+      geometry
+    );
+
+  routeGraphic =
+    new Graphic({
+
+      geometry:
+        routeGeometry,
+
+      symbol: {
+
+        type:
+          "simple-line",
+
+        color:
+          "#0b5cab",
+
+        width:
+          5,
+
+        style:
+          "solid"
+
+      }
+
+    });
+
+  routeGraphicsLayer.add(
+    routeGraphic
+  );
+
+}
+
+
+/* =====================================================
    DIRECTIONS
    ===================================================== */
 
 function displayDirections(
-  directions
+  steps
 ) {
 
-  if (!directions) {
-
-    directionsElement.style.display =
-      "none";
-
-    return;
-
-  }
-
-  const features =
-    directions.features || [];
-
-  if (!features.length) {
+  if (
+    !Array.isArray(steps) ||
+    !steps.length
+  ) {
 
     directionsElement.style.display =
       "none";
@@ -2276,17 +2337,16 @@ function displayDirections(
   directionsElement.innerHTML =
     "";
 
-  features.forEach(
+  steps.forEach(
     (step, index) => {
 
-      const attributes =
-        step.attributes || {};
-
       const text =
-        attributes.text ||
-        attributes.Text ||
-        attributes.instruction ||
+        step.text ||
         "";
+
+      if (!text) {
+        return;
+      }
 
       const item =
         document.createElement(
@@ -2329,27 +2389,16 @@ function clearRouteOnly() {
     return;
   }
 
-  routeGraphicsLayer.graphics
-    .toArray()
-    .forEach(
-      graphic => {
+  if (routeGraphic) {
 
-        if (
-          graphic !== userGraphic &&
-          graphic !== destinationGraphic &&
-          !searchGraphics.includes(
-            graphic
-          )
-        ) {
-
-          routeGraphicsLayer.remove(
-            graphic
-          );
-
-        }
-
-      }
+    routeGraphicsLayer.remove(
+      routeGraphic
     );
+
+    routeGraphic =
+      null;
+
+  }
 
   routeSummary.style.display =
     "none";
@@ -2362,6 +2411,10 @@ function clearRouteOnly() {
 
 }
 
+
+/* =====================================================
+   CLEAR SEARCH
+   ===================================================== */
 
 function clearSearchGraphics() {
 
@@ -2393,11 +2446,18 @@ closeResults.addEventListener(
   "click",
   () => {
 
-    resultsPanel.style.display =
-      "none";
+    closeResultsPanel();
 
   }
 );
+
+
+function closeResultsPanel() {
+
+  resultsPanel.style.display =
+    "none";
+
+}
 
 
 closeRoute.addEventListener(
@@ -2408,6 +2468,17 @@ closeRoute.addEventListener(
       "none";
 
     clearRouteOnly();
+
+    if (
+      destinationGraphic &&
+      routeGraphicsLayer
+    ) {
+
+      routeGraphicsLayer.remove(
+        destinationGraphic
+      );
+
+    }
 
     destinationPoint =
       null;
@@ -2469,7 +2540,9 @@ function startVoice() {
   if (recognition) {
 
     try {
+
       recognition.stop();
+
     }
     catch {}
 
@@ -2713,6 +2786,10 @@ function formatDuration(
 }
 
 
+/* =====================================================
+   HTML ESCAPE
+   ===================================================== */
+
 function escapeHTML(
   value
 ) {
@@ -2760,25 +2837,10 @@ window.city4allAsk =
 
 
 console.log(
-  "City4All AI custom frontend initialized."
+  "City4All AI frontend initialized."
 );
 
 </script>
 
 </body>
 </html>
-    
-
-
-  
-
- 
-
-   
-
-     
-    
- 
-   
-
-  
