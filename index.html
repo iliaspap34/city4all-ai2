@@ -1,3 +1,4 @@
+```html
 <!doctype html>
 <html lang="el">
 
@@ -10,6 +11,11 @@
   <script type="module" src="https://js.arcgis.com/5.1/"></script>
 
   <style>
+
+    /* =====================================================
+       RESET
+       ===================================================== */
+
     * {
       box-sizing: border-box;
     }
@@ -20,123 +26,475 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #f5f7fa;
+      overflow: hidden;
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+      background: #f4f7fb;
     }
+
+
+    /* =====================================================
+       MAIN APP
+       ===================================================== */
 
     calcite-shell {
       width: 100%;
       height: 100%;
     }
 
+
+    /* =====================================================
+       MAP
+       ===================================================== */
+
     arcgis-map {
       width: 100%;
       height: 100%;
     }
 
-    #assistant-panel {
-      --calcite-shell-panel-width: 430px;
-      width: 430px;
-      max-width: 45vw;
+
+    /* =====================================================
+       MAP CONTROLS
+       ===================================================== */
+
+    arcgis-zoom {
+      margin: 18px;
     }
+
+
+    /* =====================================================
+       AI PANEL
+       ===================================================== */
+
+    #assistant-panel {
+
+      --calcite-shell-panel-width: 470px;
+
+      width: 470px;
+
+      max-width: 42vw;
+
+      border-left:
+        1px solid rgba(15, 23, 42, 0.08);
+
+      box-shadow:
+        -10px 0 35px rgba(15, 23, 42, 0.08);
+
+      background: white;
+    }
+
 
     calcite-panel {
+
       height: 100%;
+
+      --calcite-panel-padding:
+        0;
     }
 
+
+    /* =====================================================
+       ASSISTANT
+       ===================================================== */
+
     arcgis-assistant {
-      height: 100%;
+
       width: 100%;
+
+      height: 100%;
+
+      --calcite-color-brand:
+        #1769aa;
+
+      --calcite-color-brand-hover:
+        #12578e;
     }
+
+
+    /* =====================================================
+       CUSTOM TOP BRANDING
+       ===================================================== */
+
+    #brand {
+
+      position: absolute;
+
+      top: 18px;
+
+      left: 18px;
+
+      z-index: 20;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      padding: 10px 14px;
+
+      border-radius: 14px;
+
+      background:
+        rgba(255,255,255,.94);
+
+      backdrop-filter:
+        blur(12px);
+
+      box-shadow:
+        0 8px 25px rgba(15,23,42,.12);
+
+      pointer-events: none;
+    }
+
+
+    #brand-icon {
+
+      width: 36px;
+
+      height: 36px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      border-radius: 10px;
+
+      background: #1769aa;
+
+      color: white;
+
+      font-size: 19px;
+    }
+
+
+    #brand-title {
+
+      font-weight: 750;
+
+      font-size: 15px;
+
+      color: #17202a;
+    }
+
+
+    #brand-subtitle {
+
+      font-size: 11px;
+
+      color: #667085;
+
+      margin-top: 2px;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @media (max-width: 1000px) {
+
+      #assistant-panel {
+
+        width: 400px;
+
+        max-width: 46vw;
+      }
+
+    }
+
+
+    /* =====================================================
+       TABLET / MOBILE
+       ===================================================== */
 
     @media (max-width: 800px) {
 
-      #assistant-panel {
-        width: 100%;
-        max-width: 100%;
-        height: 50%;
+      html,
+      body {
+
+        overflow: auto;
       }
 
+
+      calcite-shell {
+
+        display: flex;
+
+        flex-direction: column;
+      }
+
+
       arcgis-map {
-        height: 50%;
+
+        width: 100%;
+
+        height: 55vh;
+
+        min-height: 340px;
+
+        flex-shrink: 0;
+      }
+
+
+      #assistant-panel {
+
+        width: 100%;
+
+        max-width: none;
+
+        height: 45vh;
+
+        min-height: 430px;
+
+        border-left: none;
+
+        border-top:
+          1px solid rgba(15,23,42,.08);
+
+        box-shadow:
+          0 -10px 30px rgba(15,23,42,.10);
+      }
+
+
+      #brand {
+
+        top: 12px;
+
+        left: 12px;
+
+        padding: 8px 11px;
+      }
+
+
+      #brand-icon {
+
+        width: 32px;
+
+        height: 32px;
+
+        font-size: 17px;
+      }
+
+
+      #brand-title {
+
+        font-size: 14px;
+      }
+
+
+      #brand-subtitle {
+
+        display: none;
       }
 
     }
+
+
+    /* =====================================================
+       SMALL PHONES
+       ===================================================== */
+
+    @media (max-width: 520px) {
+
+      arcgis-map {
+
+        height: 48vh;
+
+        min-height: 300px;
+      }
+
+
+      #assistant-panel {
+
+        height: 52vh;
+
+        min-height: 440px;
+      }
+
+
+      #brand {
+
+        top: 10px;
+
+        left: 10px;
+      }
+
+    }
+
+
   </style>
+
 </head>
+
 
 <body>
 
+
   <calcite-shell>
 
-    <!-- CITY4ALL MAP -->
+
+    <!-- =================================================
+         MAP
+         ================================================= -->
+
     <arcgis-map
       id="city4all-map"
       item-id="969e9e5433dd4b968cf06793dc7b7aca">
 
-      <arcgis-zoom slot="top-left"></arcgis-zoom>
 
-      <arcgis-expand slot="top-left">
-        <arcgis-legend></arcgis-legend>
+      <arcgis-zoom
+        slot="top-left">
+      </arcgis-zoom>
+
+
+      <arcgis-expand
+        slot="top-left">
+
+        <arcgis-legend>
+        </arcgis-legend>
+
       </arcgis-expand>
+
 
     </arcgis-map>
 
 
-    <!-- AI PANEL -->
+    <!-- =================================================
+         CITY4ALL BRAND
+         ================================================= -->
+
+    <div id="brand">
+
+      <div id="brand-icon">
+        ♿
+      </div>
+
+      <div>
+
+        <div id="brand-title">
+          City4All
+        </div>
+
+        <div id="brand-subtitle">
+          Accessibility Map
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =================================================
+         AI PANEL
+         ================================================= -->
+
     <calcite-shell-panel
       slot="panel-end"
       id="assistant-panel"
       width="l">
 
+
       <calcite-panel>
 
+
         <arcgis-assistant
+
           id="city4all-assistant"
+
           reference-element="#city4all-map"
 
           heading="City4All AI"
 
-          description="Ρώτησέ με φυσικά για προσβάσιμα σημεία που έχουν καταγραφεί στο City4All."
+          description="
+            Ρώτησέ με φυσικά για προσβάσιμα
+            σημεία που έχουν καταγραφεί στο City4All.
+          "
 
-          entry-message="Γεια σου! 👋 Είμαι ο AI Assistant του City4All. Μπορώ να σε βοηθήσω να εξερευνήσεις τα σημεία προσβασιμότητας στον χάρτη. Ρώτησέ με τι ψάχνεις."
+          entry-message="
+            Γεια σου! 👋
+
+            Είμαι ο AI Assistant του City4All.
+
+            Μπορώ να σε βοηθήσω να εξερευνήσεις
+            τα σημεία προσβασιμότητας στον χάρτη.
+
+            Ρώτησέ με τι ψάχνεις.
+          "
 
           log-enabled
+
           copy-enabled>
 
-          <!-- Navigation -->
+
+          <!-- ===========================================
+               NAVIGATION AGENT
+               =========================================== -->
+
           <arcgis-assistant-navigation-agent>
           </arcgis-assistant-navigation-agent>
 
-          <!-- DATA EXPLORATION -->
+
+          <!-- ===========================================
+               DATA EXPLORATION AGENT
+               =========================================== -->
+
           <arcgis-assistant-data-exploration-agent>
           </arcgis-assistant-data-exploration-agent>
 
-          <!-- Help -->
+
+          <!-- ===========================================
+               HELP AGENT
+               =========================================== -->
+
           <arcgis-assistant-help-agent>
           </arcgis-assistant-help-agent>
 
+
         </arcgis-assistant>
+
 
       </calcite-panel>
 
+
     </calcite-shell-panel>
+
 
   </calcite-shell>
 
 
+
   <script type="module">
 
+
+    /* =====================================================
+       ELEMENTS
+       ===================================================== */
+
     const assistant =
-      document.querySelector("#city4all-assistant");
+      document.querySelector(
+        "#city4all-assistant"
+      );
+
 
     const map =
-      document.querySelector("#city4all-map");
+      document.querySelector(
+        "#city4all-map"
+      );
 
 
-    /*
-     * ΠΡΟΤΕΙΝΟΜΕΝΕΣ ΕΡΩΤΗΣΕΙΣ
-     */
+
+    /* =====================================================
+       SUGGESTED PROMPTS
+       ===================================================== */
 
     assistant.suggestedPrompts = [
 
@@ -148,28 +506,249 @@
 
       "Βρες μου προσβάσιμα σημεία στην Καλλιθέα.",
 
-      "Ποια σημεία είναι κατάλληλα για χρήστη αναπηρικού αμαξιδίου;"
+      "Ποια σημεία είναι κατάλληλα για χρήστη αναπηρικού αμαξιδίου;",
+
+      "Βρες μου προσβάσιμα σημεία κοντά μου."
 
     ];
 
 
-    /*
-     * Όταν φορτώσει ο χάρτης
-     */
+
+    /* =====================================================
+       MAP READY
+       ===================================================== */
 
     map.addEventListener(
+
       "arcgisViewReadyChange",
+
       () => {
 
         console.log(
-          "City4All map loaded."
+          "City4All map loaded successfully."
         );
 
       }
+
+    );
+
+
+
+    /* =====================================================
+       ROUTING HELPER
+       =====================================================
+
+       Αυτή η συνάρτηση δημιουργεί Google Maps
+       directions για οποιοδήποτε σημείο.
+
+       Δεν απαιτεί API key.
+
+       Χρησιμοποιεί τις συντεταγμένες του σημείου.
+       ===================================================== */
+
+    window.openGoogleDirections =
+      function(latitude, longitude) {
+
+        if (
+          latitude == null ||
+          longitude == null
+        ) {
+
+          return;
+
+        }
+
+
+        const url =
+          "https://www.google.com/maps/dir/?api=1" +
+          "&destination=" +
+          encodeURIComponent(
+            `${latitude},${longitude}`
+          );
+
+
+        window.open(
+          url,
+          "_blank",
+          "noopener,noreferrer"
+        );
+
+      };
+
+
+
+    /* =====================================================
+       ROUTING OPTIONS
+       =====================================================
+
+       Έτοιμες επιλογές για:
+
+       🚗 αυτοκίνητο
+       🚶 πεζή
+       🚲 ποδήλατο
+
+       Το Google Maps αναλαμβάνει τη διαδρομή.
+       ===================================================== */
+
+    window.openRoute =
+      function(
+        latitude,
+        longitude,
+        mode = "driving"
+      ) {
+
+
+        if (
+          latitude == null ||
+          longitude == null
+        ) {
+
+          return;
+
+        }
+
+
+        const url =
+          "https://www.google.com/maps/dir/?api=1" +
+          "&destination=" +
+          encodeURIComponent(
+            `${latitude},${longitude}`
+          ) +
+          "&travelmode=" +
+          encodeURIComponent(mode);
+
+
+        window.open(
+          url,
+          "_blank",
+          "noopener,noreferrer"
+        );
+
+      };
+
+
+
+    /* =====================================================
+       OPTIONAL ROUTING CARD
+       =====================================================
+
+       Μπορούμε να χρησιμοποιήσουμε αυτό το component
+       αργότερα όταν το AI επιστρέφει coordinates.
+
+       Παράδειγμα:
+
+       createRouteButtons(37.9,23.7)
+       ===================================================== */
+
+    window.createRouteButtons =
+      function(latitude, longitude) {
+
+        const container =
+          document.createElement("div");
+
+
+        container.style.display =
+          "flex";
+
+        container.style.flexWrap =
+          "wrap";
+
+        container.style.gap =
+          "8px";
+
+        container.style.marginTop =
+          "12px";
+
+
+        const driving =
+          document.createElement("button");
+
+
+        driving.textContent =
+          "🚗 Οδήγηση";
+
+
+        driving.onclick =
+          () =>
+            window.openRoute(
+              latitude,
+              longitude,
+              "driving"
+            );
+
+
+        const walking =
+          document.createElement("button");
+
+
+        walking.textContent =
+          "🚶 Πεζή";
+
+
+        walking.onclick =
+          () =>
+            window.openRoute(
+              latitude,
+              longitude,
+              "walking"
+            );
+
+
+        [driving, walking]
+          .forEach(button => {
+
+            button.style.border =
+              "none";
+
+            button.style.borderRadius =
+              "10px";
+
+            button.style.padding =
+              "9px 12px";
+
+            button.style.cursor =
+              "pointer";
+
+            button.style.background =
+              "#1769aa";
+
+            button.style.color =
+              "white";
+
+            button.style.fontWeight =
+              "600";
+
+          });
+
+
+        container.appendChild(
+          driving
+        );
+
+        container.appendChild(
+          walking
+        );
+
+
+        return container;
+
+      };
+
+
+
+    /* =====================================================
+       DEBUG
+       ===================================================== */
+
+    console.log(
+      "City4All AI initialized."
     );
 
 
   </script>
 
+
 </body>
+
 </html>
+```
