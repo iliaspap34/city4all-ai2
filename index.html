@@ -1,15 +1,25 @@
 <!doctype html>
+
 <html lang="el">
 
 <head>
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1, viewport-fit=cover"
+
+>
+
+<meta
+name="theme-color"
+content="#0b5cab"
+
+>
 
   <title>City4All AI</title>
+
+  <!-- ArcGIS Maps SDK for JavaScript 5.1 -->
 
   <script type="module" src="https://js.arcgis.com/5.1/"></script>
 
@@ -26,14 +36,21 @@
       height: 100%;
       overflow: hidden;
       font-family:
+        Inter,
         Arial,
         Helvetica,
         sans-serif;
-      background: #f5f7fa;
+      background: #f4f7fb;
+      color: #17202a;
     }
 
     body {
       min-height: 100dvh;
+    }
+
+    button,
+    input {
+      font: inherit;
     }
 
     calcite-shell {
@@ -46,226 +63,83 @@
       height: 100%;
     }
 
-    /* ==================================================
-       AI PANEL
-       ================================================== */
+    /* =====================================================
+       DESKTOP AI PANEL
+       ===================================================== */
 
     #assistant-panel {
-      --calcite-shell-panel-width: 440px;
       width: 440px;
       max-width: 45vw;
+      --calcite-shell-panel-width: 440px;
     }
 
     #assistant-panel calcite-panel {
       height: 100%;
     }
 
+    /*
+     * We keep the ArcGIS assistant component available as
+     * the visual shell for the AI conversation.
+     */
     arcgis-assistant {
       width: 100%;
       height: 100%;
     }
 
-    /* ==================================================
-       RESULTS PANEL
-       ================================================== */
-
-    #results-panel {
-      position: absolute;
-      top: 18px;
-      left: 18px;
-
-      width: 390px;
-      max-width: calc(100vw - 36px);
-
-      max-height: calc(100vh - 180px);
-
-      z-index: 100;
-
-      background: rgba(255, 255, 255, 0.97);
-
-      border:
-        1px solid
-        rgba(0, 0, 0, 0.1);
-
-      border-radius: 18px;
-
-      box-shadow:
-        0 12px 35px
-        rgba(0, 0, 0, 0.18);
-
-      backdrop-filter: blur(14px);
-
-      overflow: hidden;
-
-      display: none;
-    }
-
-    #results-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 14px 16px;
-
-      border-bottom:
-        1px solid
-        #e5e7eb;
-    }
-
-    #results-title {
-      font-size: 15px;
-      font-weight: 700;
-    }
-
-    #results-list {
-      padding: 10px;
-      overflow-y: auto;
-
-      max-height: calc(100vh - 240px);
-    }
-
-    .result-card {
-      background: #f8fafc;
-
-      border:
-        1px solid
-        #e5e7eb;
-
-      border-radius: 14px;
-
-      padding: 13px;
-
-      margin-bottom: 9px;
-    }
-
-    .result-card:last-child {
-      margin-bottom: 0;
-    }
-
-    .result-name {
-      font-weight: 700;
-      font-size: 14px;
-      color: #17202a;
-    }
-
-    .result-type {
-      font-size: 11px;
-      color: #667085;
-      margin-top: 3px;
-    }
-
-    .result-accessibility {
-      margin-top: 8px;
-
-      font-size: 12px;
-
-      line-height: 1.45;
-
-      color: #344054;
-    }
-
-    .result-actions {
-      display: grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap: 7px;
-
-      margin-top: 10px;
-    }
-
-    .result-button {
-      border: 0;
-
-      border-radius: 10px;
-
-      padding: 9px;
-
-      cursor: pointer;
-
-      font-size: 12px;
-
-      font-weight: 700;
-
-      background: #1769aa;
-
-      color: white;
-    }
-
-    .result-button.secondary {
-      background: #eef2f6;
-      color: #344054;
-    }
-
-    .result-button:hover {
-      opacity: 0.9;
-    }
-
-    /* ==================================================
+    /* =====================================================
        ROUTING PANEL
-       ================================================== */
+       ===================================================== */
 
     #routing-panel {
       position: absolute;
-
       left: 18px;
       bottom: 18px;
 
-      width: 390px;
+      width: 380px;
+      max-width: calc(100vw - 36px);
 
-      max-width:
-        calc(100vw - 36px);
-
-      z-index: 110;
+      z-index: 500;
 
       background:
-        rgba(255,255,255,.97);
+        rgba(255, 255, 255, 0.97);
 
       border:
-        1px solid
-        rgba(0,0,0,.1);
+        1px solid rgba(15, 23, 42, 0.10);
 
-      border-radius: 18px;
+      border-radius: 20px;
 
       box-shadow:
-        0 12px 35px
-        rgba(0,0,0,.18);
+        0 18px 50px rgba(15, 23, 42, 0.20);
 
       overflow: hidden;
 
       backdrop-filter:
-        blur(12px);
+        blur(18px);
 
-      display: none;
+      -webkit-backdrop-filter:
+        blur(18px);
     }
 
     #routing-header {
       display: flex;
-
       align-items: center;
-
       justify-content: space-between;
 
-      gap: 10px;
+      gap: 12px;
 
-      padding: 14px 16px;
+      padding: 15px 16px;
 
       border-bottom:
-        1px solid
-        #e5e7eb;
+        1px solid #e7ebf0;
     }
 
     #routing-title {
       display: flex;
-
       align-items: center;
-
       gap: 9px;
 
-      font-weight: 700;
-
       font-size: 15px;
+      font-weight: 800;
     }
 
     #routing-subtitle {
@@ -277,21 +151,20 @@
     }
 
     #route-content {
-      padding: 14px 16px;
+      padding: 14px 16px 16px;
     }
 
     #selected-place {
-      padding: 11px;
-
-      border-radius: 12px;
-
-      background: #f1f5f9;
+      padding: 12px;
 
       margin-bottom: 10px;
 
-      font-size: 13px;
+      border-radius: 13px;
 
-      line-height: 1.4;
+      background: #f3f6fa;
+
+      font-size: 13px;
+      line-height: 1.45;
     }
 
     #selected-place strong {
@@ -311,38 +184,50 @@
     .route-button {
       border: 0;
 
-      border-radius: 11px;
+      border-radius: 12px;
 
-      padding: 11px;
+      padding: 11px 12px;
 
       cursor: pointer;
 
       font-size: 13px;
+      font-weight: 700;
 
-      font-weight: 600;
-
-      background: #1769aa;
-
+      background: #0b5cab;
       color: white;
+
+      transition:
+        transform .15s ease,
+        opacity .15s ease,
+        box-shadow .15s ease;
+    }
+
+    .route-button:hover {
+      transform: translateY(-1px);
+      opacity: .94;
+
+      box-shadow:
+        0 5px 14px rgba(11, 92, 171, .20);
     }
 
     .route-button.secondary {
-      background: #eef2f6;
+      background: #edf2f7;
       color: #344054;
     }
 
     .route-button:disabled {
       opacity: .45;
       cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
 
     #route-status {
       margin-top: 11px;
 
-      font-size: 12px;
-
       color: #667085;
 
+      font-size: 12px;
       line-height: 1.45;
     }
 
@@ -361,23 +246,23 @@
       background: #f8fafc;
 
       border:
-        1px solid
-        #e5e7eb;
+        1px solid #e5e7eb;
 
-      border-radius: 12px;
+      border-radius: 13px;
 
-      padding: 10px;
+      padding: 11px;
     }
 
     .summary-label {
+      margin-bottom: 4px;
+
       font-size: 10px;
       color: #667085;
-      margin-bottom: 4px;
     }
 
     .summary-value {
-      font-size: 16px;
-      font-weight: 700;
+      font-size: 17px;
+      font-weight: 800;
       color: #17202a;
     }
 
@@ -386,13 +271,12 @@
 
       margin-top: 11px;
 
-      max-height: 170px;
+      max-height: 190px;
 
       overflow-y: auto;
 
       border-top:
-        1px solid
-        #e5e7eb;
+        1px solid #e5e7eb;
 
       padding-top: 9px;
     }
@@ -401,29 +285,173 @@
       padding: 8px 0;
 
       border-bottom:
-        1px solid
-        #f0f2f5;
+        1px solid #f0f2f5;
 
       font-size: 12px;
 
-      line-height: 1.4;
+      line-height: 1.45;
     }
 
-    /* ==================================================
-       GOOGLE MAPS
-       ================================================== */
+    .direction-step:last-child {
+      border-bottom: 0;
+    }
 
-    #google-maps-button {
+    /* =====================================================
+       AI RESULT OVERLAY
+       ===================================================== */
+
+    #results-panel {
+      position: absolute;
+
+      top: 18px;
+      left: 18px;
+
+      z-index: 450;
+
+      width: 370px;
+      max-width: calc(100vw - 36px);
+
+      max-height: 52vh;
+
+      overflow-y: auto;
+
+      display: none;
+
+      background:
+        rgba(255,255,255,.97);
+
+      border:
+        1px solid rgba(15,23,42,.10);
+
+      border-radius: 20px;
+
+      box-shadow:
+        0 18px 50px rgba(15,23,42,.18);
+
+      backdrop-filter:
+        blur(16px);
+    }
+
+    #results-header {
+      position: sticky;
+      top: 0;
+
+      z-index: 2;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: space-between;
+
+      padding: 13px 15px;
+
+      background:
+        rgba(255,255,255,.96);
+
+      border-bottom:
+        1px solid #e7ebf0;
+    }
+
+    #results-title {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    #results-count {
+      margin-top: 2px;
+
+      font-size: 11px;
+      color: #667085;
+    }
+
+    #results-list {
+      padding: 9px;
+    }
+
+    .result-card {
       width: 100%;
 
-      margin-top: 8px;
+      padding: 12px;
 
-      background: #111827;
+      margin-bottom: 8px;
+
+      border:
+        1px solid #e6eaf0;
+
+      border-radius: 14px;
+
+      background: #fff;
+
+      cursor: pointer;
+
+      text-align: left;
+
+      transition:
+        transform .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease;
     }
 
-    /* ==================================================
-       MAP HELP
-       ================================================== */
+    .result-card:hover {
+      transform: translateY(-1px);
+
+      border-color:
+        #9ec5e8;
+
+      box-shadow:
+        0 5px 18px rgba(15,23,42,.08);
+    }
+
+    .result-name {
+      font-size: 14px;
+      font-weight: 800;
+
+      color: #17202a;
+    }
+
+    .result-type {
+      margin-top: 3px;
+
+      font-size: 11px;
+      color: #667085;
+    }
+
+    .result-accessibility {
+      margin-top: 8px;
+
+      font-size: 12px;
+      line-height: 1.4;
+
+      color: #344054;
+    }
+
+    .result-area {
+      margin-top: 6px;
+
+      font-size: 11px;
+      color: #667085;
+    }
+
+    .result-route {
+      display: inline-block;
+
+      margin-top: 9px;
+
+      padding: 5px 8px;
+
+      border-radius: 8px;
+
+      background: #eaf3fb;
+
+      color: #0b5cab;
+
+      font-size: 10px;
+      font-weight: 800;
+    }
+
+    /* =====================================================
+       MAP MESSAGE
+       ===================================================== */
 
     #map-help {
       position: absolute;
@@ -434,10 +462,10 @@
       transform:
         translateX(-50%);
 
-      z-index: 90;
+      z-index: 400;
 
       background:
-        rgba(23,105,170,.96);
+        rgba(11,92,171,.96);
 
       color: white;
 
@@ -449,24 +477,23 @@
       font-size: 12px;
 
       box-shadow:
-        0 6px 20px
-        rgba(0,0,0,.15);
+        0 6px 20px rgba(0,0,0,.15);
 
       pointer-events: none;
 
       opacity: 0;
 
       transition:
-        opacity .25s;
+        opacity .25s ease;
     }
 
     #map-help.visible {
       opacity: 1;
     }
 
-    /* ==================================================
+    /* =====================================================
        MOBILE
-       ================================================== */
+       ===================================================== */
 
     @media (max-width: 900px) {
 
@@ -480,14 +507,15 @@
       }
 
       arcgis-map {
-        height: 56dvh;
-        min-height: 390px;
+        height: 55dvh;
+        min-height: 410px;
       }
 
       #assistant-panel {
         width: 100%;
         max-width: 100%;
-        height: 44dvh;
+
+        height: 45dvh;
       }
 
       #results-panel {
@@ -498,11 +526,7 @@
         width: auto;
         max-width: none;
 
-        max-height: 42dvh;
-      }
-
-      #results-list {
-        max-height: 34dvh;
+        max-height: 40dvh;
       }
 
       #routing-panel {
@@ -527,277 +551,276 @@
     @media (max-width: 600px) {
 
       arcgis-map {
-        height: 52dvh;
-        min-height: 360px;
+        height: 51dvh;
+        min-height: 370px;
       }
 
       #assistant-panel {
-        height: 48dvh;
-      }
-
-      #routing-panel {
-        bottom: 8px;
-        left: 8px;
-        right: 8px;
-
-        border-radius: 16px;
+        height: 49dvh;
       }
 
       #results-panel {
-        top: 8px;
+        max-height: 36dvh;
+
+        border-radius: 17px;
+      }
+
+      #routing-panel {
         left: 8px;
         right: 8px;
+        bottom: 8px;
+
+        border-radius: 17px;
       }
 
       #route-content {
-        padding: 11px 13px;
+        padding: 11px 13px 13px;
       }
 
       #directions {
         max-height: 120px;
       }
+
+      .route-button {
+        padding: 10px 8px;
+        font-size: 12px;
+      }
     }
   </style>
-</head>
 
+</head>
 
 <body>
 
   <calcite-shell>
 
-    <!-- ==================================================
-         CITY4ALL MAP
-         ================================================== -->
+```
+<!-- ==================================================
+     CITY4ALL MAP
+     ================================================== -->
 
-    <arcgis-map
-      id="city4all-map"
-      item-id="969e9e5433dd4b968cf06793dc7b7aca"
-    >
+<arcgis-map
+  id="city4all-map"
+  item-id="969e9e5433dd4b968cf06793dc7b7aca">
 
-      <arcgis-zoom
-        slot="top-left">
-      </arcgis-zoom>
+  <arcgis-zoom slot="top-left"></arcgis-zoom>
 
-      <arcgis-expand
-        slot="top-left">
+  <arcgis-expand slot="top-left">
+    <arcgis-legend></arcgis-legend>
+  </arcgis-expand>
 
-        <arcgis-legend>
-        </arcgis-legend>
-
-      </arcgis-expand>
-
-    </arcgis-map>
+</arcgis-map>
 
 
-    <!-- ==================================================
-         AI ASSISTANT
-         ================================================== -->
+<!-- ==================================================
+     AI ASSISTANT
+     ================================================== -->
 
-    <calcite-shell-panel
-      slot="panel-end"
-      id="assistant-panel"
-      width="l"
-    >
+<calcite-shell-panel
+  slot="panel-end"
+  id="assistant-panel"
+  width="l">
 
-      <calcite-panel>
+  <calcite-panel>
 
-        <arcgis-assistant
-          id="city4all-assistant"
+    <arcgis-assistant
+      id="city4all-assistant"
 
-          reference-element="#city4all-map"
+      heading="City4All AI"
 
-          heading="City4All AI"
+      description="Ρώτησέ με φυσικά για προσβάσιμα σημεία που έχουν καταγραφεί στο City4All."
 
-          description="Ρώτησέ με φυσικά για προσβάσιμα σημεία, υπηρεσίες και δυνατότητες προσβασιμότητας."
+      entry-message="Γεια σου! 👋 Είμαι ο AI Assistant του City4All. Μπορώ να σε βοηθήσω να βρεις προσβάσιμα σημεία και να μάθεις περισσότερα για την προσβασιμότητα."
 
-          entry-message="Γεια σου! 👋 Είμαι ο AI Assistant του City4All. Μπορώ να σε βοηθήσω να βρεις προσβάσιμα σημεία, να σου εξηγήσω χαρακτηριστικά προσβασιμότητας και να σε οδηγήσω στον προορισμό σου."
+      log-enabled
+      copy-enabled>
 
-          log-enabled
-          copy-enabled
-        >
+      <!--
+        These agents remain available for map interaction.
+        The custom City4All AI request is handled through
+        our Cloudflare Worker below.
+      -->
 
-          <arcgis-assistant-navigation-agent>
-          </arcgis-assistant-navigation-agent>
+      <arcgis-assistant-navigation-agent>
+      </arcgis-assistant-navigation-agent>
 
-          <arcgis-assistant-data-exploration-agent>
-          </arcgis-assistant-data-exploration-agent>
+      <arcgis-assistant-data-exploration-agent>
+      </arcgis-assistant-data-exploration-agent>
 
-          <arcgis-assistant-help-agent>
-          </arcgis-assistant-help-agent>
+      <arcgis-assistant-help-agent>
+      </arcgis-assistant-help-agent>
 
-        </arcgis-assistant>
+    </arcgis-assistant>
 
-      </calcite-panel>
+  </calcite-panel>
 
-    </calcite-shell-panel>
+</calcite-shell-panel>
+```
 
   </calcite-shell>
-
 
   <!-- ==================================================
        AI RESULTS
        ================================================== -->
 
-  <div id="results-panel">
+  <section id="results-panel">
 
-    <div id="results-header">
+```
+<div id="results-header">
 
-      <div id="results-title">
-        📍 Αποτελέσματα City4All
-      </div>
-
-      <button
-        id="close-results"
-        class="route-button secondary"
-        style="
-          width:34px;
-          height:34px;
-          padding:0;
-        "
-      >
-        ×
-      </button>
-
+  <div>
+    <div id="results-title">
+      📍 Αποτελέσματα City4All
     </div>
 
-    <div id="results-list"></div>
-
+    <div id="results-count">
+      Πραγματικές καταχωρίσεις από το City4All
+    </div>
   </div>
 
+  <button
+    id="close-results"
+    class="route-button secondary"
+    style="
+      width:34px;
+      height:34px;
+      padding:0;
+    "
+    aria-label="Κλείσιμο αποτελεσμάτων">
+    ×
+  </button>
+
+</div>
+
+<div id="results-list"></div>
+```
+
+  </section>
 
   <!-- ==================================================
-       ROUTING
+       ROUTING PANEL
        ================================================== -->
 
-  <div id="routing-panel">
+  <section id="routing-panel">
 
-    <div id="routing-header">
+```
+<div id="routing-header">
 
-      <div>
+  <div>
 
-        <div id="routing-title">
-          <span>🧭</span>
-          <span>Πλοήγηση City4All</span>
-        </div>
+    <div id="routing-title">
+      <span>🧭</span>
+      <span>Πλοήγηση City4All</span>
+    </div>
 
-        <div id="routing-subtitle">
-          ArcGIS Location Services
-        </div>
+    <div id="routing-subtitle">
+      ArcGIS Location Services
+    </div>
 
+  </div>
+
+  <button
+    id="close-route"
+    class="route-button secondary"
+    style="
+      width:34px;
+      height:34px;
+      padding:0;
+    "
+    aria-label="Κλείσιμο διαδρομής">
+    ×
+  </button>
+
+</div>
+
+
+<div id="route-content">
+
+  <div id="selected-place">
+
+    <strong>
+      📍 Προορισμός
+    </strong>
+
+    Επίλεξε ένα σημείο από τα αποτελέσματα
+    ή κάνε κλικ σε ένα σημείο του χάρτη.
+
+  </div>
+
+
+  <div class="route-buttons">
+
+    <button
+      id="route-button"
+      class="route-button"
+      disabled>
+      🚗 Βρες διαδρομή
+    </button>
+
+    <button
+      id="location-button"
+      class="route-button secondary">
+      📍 Η θέση μου
+    </button>
+
+  </div>
+
+
+  <div id="route-status">
+    Η διαδρομή υπολογίζεται με το
+    ArcGIS Routing service.
+  </div>
+
+
+  <div id="route-summary">
+
+    <div class="summary-card">
+
+      <div class="summary-label">
+        Απόσταση
       </div>
 
-      <button
-        id="close-route"
-        class="route-button secondary"
-        style="
-          width:34px;
-          height:34px;
-          padding:0;
-        "
-      >
-        ×
-      </button>
+      <div
+        class="summary-value"
+        id="distance">
+        —
+      </div>
 
     </div>
 
 
-    <div id="route-content">
+    <div class="summary-card">
 
-      <div id="selected-place">
-
-        <strong>
-          📍 Προορισμός
-        </strong>
-
-        Επίλεξε ένα σημείο City4All.
-
+      <div class="summary-label">
+        Χρόνος με αυτοκίνητο
       </div>
 
-
-      <div class="route-buttons">
-
-        <button
-          id="route-button"
-          class="route-button"
-          disabled
-        >
-          🚗 Βρες διαδρομή
-        </button>
-
-        <button
-          id="location-button"
-          class="route-button secondary"
-        >
-          📍 Η θέση μου
-        </button>
-
+      <div
+        class="summary-value"
+        id="duration">
+        —
       </div>
-
-
-      <button
-        id="google-maps-button"
-        class="route-button"
-        disabled
-      >
-        🗺️ Άνοιγμα Google Maps
-      </button>
-
-
-      <div id="route-status">
-
-        Η διαδρομή χρησιμοποιεί
-        ArcGIS Location Services.
-
-      </div>
-
-
-      <div id="route-summary">
-
-        <div class="summary-card">
-
-          <div class="summary-label">
-            Απόσταση
-          </div>
-
-          <div
-            class="summary-value"
-            id="distance"
-          >
-            —
-          </div>
-
-        </div>
-
-
-        <div class="summary-card">
-
-          <div class="summary-label">
-            Χρόνος
-          </div>
-
-          <div
-            class="summary-value"
-            id="duration"
-          >
-            —
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <div id="directions"></div>
 
     </div>
 
   </div>
 
+
+  <div id="directions"></div>
+
+</div>
+```
+
+  </section>
+
+  <!-- ==================================================
+       MAP HELP
+       ================================================== -->
 
   <div id="map-help">
-    Κάνε κλικ σε ένα City4All σημείο για να το επιλέξεις.
+    Επίλεξε ένα σημείο για να δεις πληροφορίες
+    και να ζητήσεις διαδρομή.
   </div>
-
 
   <!-- ==================================================
        JAVASCRIPT
@@ -806,46 +829,57 @@
   <script type="module">
 
     /*
-     * ==================================================
-     * CONFIG
-     * ==================================================
+     * ====================================================
+     * CONFIGURATION
+     * ====================================================
      */
 
+    /*
+     * IMPORTANT:
+     * This is the PUBLIC Cloudflare Worker URL.
+     *
+     * The OpenAI API key stays inside Cloudflare.
+     */
     const API_URL =
-      "https://city4all-ai2-api.ilias-pap-net.workers.dev/";
-
-
-    const ARCGIS_API_KEY =
-      "YOUR_ARCGIS_API_KEY";
+      "https://city4all-ai2-api.ilias-pap-net.workers.dev";
 
 
     /*
-     * ==================================================
-     * IMPORT ARCGIS
-     * ==================================================
+     * ArcGIS API key.
+     *
+     * This key is intentionally used client-side for
+     * ArcGIS Location Services / Routing.
+     *
+     * Restrict this key in ArcGIS to:
+     * - Routing
+     * - required map/basemap privileges
+     * - your production referrer/domain
+     */
+    const ARCGIS_API_KEY =
+      "REPLACE_WITH_YOUR_ARCGIS_API_KEY";
+
+
+    /*
+     * ArcGIS World Route service.
+     */
+    const ROUTE_URL =
+      "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World";
+
+
+    /*
+     * ====================================================
+     * ARCGIS MODULES
+     * ====================================================
      */
 
     const [
-
-      esriConfig,
-
       route,
-
       RouteParameters,
-
       FeatureSet,
-
       Graphic,
-
       Point,
-
       GraphicsLayer
-
     ] = await Promise.all([
-
-      $arcgis.import(
-        "@arcgis/core/config.js"
-      ),
 
       $arcgis.import(
         "@arcgis/core/rest/route.js"
@@ -874,22 +908,10 @@
     ]);
 
 
-    if (
-      ARCGIS_API_KEY &&
-      ARCGIS_API_KEY !==
-        "YOUR_ARCGIS_API_KEY"
-    ) {
-
-      esriConfig.apiKey =
-        ARCGIS_API_KEY;
-
-    }
-
-
     /*
-     * ==================================================
+     * ====================================================
      * ELEMENTS
-     * ==================================================
+     * ====================================================
      */
 
     const map =
@@ -912,14 +934,14 @@
         "#results-list"
       );
 
+    const resultsCount =
+      document.querySelector(
+        "#results-count"
+      );
+
     const closeResults =
       document.querySelector(
         "#close-results"
-      );
-
-    const routingPanel =
-      document.querySelector(
-        "#routing-panel"
       );
 
     const routeButton =
@@ -930,11 +952,6 @@
     const locationButton =
       document.querySelector(
         "#location-button"
-      );
-
-    const googleMapsButton =
-      document.querySelector(
-        "#google-maps-button"
       );
 
     const closeRoute =
@@ -979,28 +996,28 @@
 
 
     /*
-     * ==================================================
+     * ====================================================
      * STATE
-     * ==================================================
+     * ====================================================
      */
+
+    let routeGraphicsLayer = null;
 
     let destinationPoint = null;
 
-    let userLocationPoint = null;
-
     let destinationGraphic = null;
 
-    let userGraphic = null;
+    let userLocationPoint = null;
 
-    let routeGraphicsLayer = null;
+    let userGraphic = null;
 
     let selectedFeature = null;
 
 
     /*
-     * ==================================================
-     * AI PROMPTS
-     * ==================================================
+     * ====================================================
+     * SUGGESTED PROMPTS
+     * ====================================================
      */
 
     assistant.suggestedPrompts = [
@@ -1019,9 +1036,9 @@
 
 
     /*
-     * ==================================================
+     * ====================================================
      * MAP READY
-     * ==================================================
+     * ====================================================
      */
 
     map.addEventListener(
@@ -1036,12 +1053,13 @@
         }
 
 
+        /*
+         * Layer used only for our route,
+         * current location and selected destination.
+         */
         routeGraphicsLayer =
           new GraphicsLayer({
-
-            title:
-              "City4All Navigation"
-
+            title: "City4All Navigation"
           });
 
 
@@ -1050,26 +1068,10 @@
         );
 
 
-        setTimeout(
-          () => {
+        showMapHelp();
 
-            mapHelp.classList.add(
-              "visible"
-            );
-
-            setTimeout(
-              () => {
-
-                mapHelp.classList.remove(
-                  "visible"
-                );
-
-              },
-              4500
-            );
-
-          },
-          1000
+        console.log(
+          "City4All map loaded."
         );
 
       }
@@ -1077,14 +1079,634 @@
 
 
     /*
-     * ==================================================
+     * ====================================================
+     * AI SUBMISSION
+     * ====================================================
+     *
+     * We listen for user submission in the ArcGIS
+     * assistant and send the actual question to our
+     * Cloudflare Worker.
+     *
+     * If the exact event is not exposed by the current
+     * component build, the normal assistant remains
+     * available and the custom API can be called by
+     * the helper below.
+     */
+
+    assistant.addEventListener(
+      "arcgisAssistantMessage",
+      handleAssistantEvent
+    );
+
+    assistant.addEventListener(
+      "message",
+      handleAssistantEvent
+    );
+
+
+    function handleAssistantEvent(event) {
+
+      const detail =
+        event.detail || {};
+
+      const message =
+        extractUserMessage(detail);
+
+      if (!message) {
+        return;
+      }
+
+      sendToCity4AllAI(
+        message
+      );
+
+    }
+
+
+    function extractUserMessage(
+      detail
+    ) {
+
+      if (
+        typeof detail === "string"
+      ) {
+        return detail.trim();
+      }
+
+      if (
+        typeof detail.message === "string"
+      ) {
+        return detail.message.trim();
+      }
+
+      if (
+        typeof detail.text === "string"
+      ) {
+        return detail.text.trim();
+      }
+
+      if (
+        detail.message &&
+        typeof detail.message.text === "string"
+      ) {
+        return detail.message.text.trim();
+      }
+
+      return "";
+
+    }
+
+
+    /*
+     * ====================================================
+     * CITY4ALL AI REQUEST
+     * ====================================================
+     */
+
+    async function sendToCity4AllAI(
+      message
+    ) {
+
+      if (!message) {
+        return;
+      }
+
+
+      /*
+       * Prevent accidental duplicate calls.
+       */
+      if (
+        message.length > 2000
+      ) {
+        message =
+          message.substring(
+            0,
+            2000
+          );
+      }
+
+
+      try {
+
+        console.log(
+          "City4All AI request:",
+          message
+        );
+
+
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json"
+              },
+
+              body:
+                JSON.stringify({
+                  message
+                })
+            }
+          );
+
+
+        if (!response.ok) {
+
+          const errorText =
+            await response.text();
+
+          throw new Error(
+            `Worker error ${response.status}: ${errorText}`
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        console.log(
+          "City4All AI response:",
+          data
+        );
+
+
+        /*
+         * Real features from the City4All layer.
+         */
+        const features =
+          Array.isArray(
+            data.features
+          )
+            ? data.features
+            : [];
+
+
+        /*
+         * Show results.
+         */
+        if (features.length) {
+
+          renderResults(
+            features
+          );
+
+          await showFeaturesOnMap(
+            features
+          );
+
+        }
+        else {
+
+          closeResultsPanel();
+
+          clearSearchGraphics();
+
+        }
+
+
+        /*
+         * If the Worker gives us an AI answer,
+         * speak it when voice mode is enabled.
+         */
+        if (
+          data.answer &&
+          window.city4allVoiceEnabled
+        ) {
+
+          speakText(
+            data.answer
+          );
+
+        }
+
+
+      }
+      catch (error) {
+
+        console.error(
+          "City4All AI error:",
+          error
+        );
+
+        routeStatus.textContent =
+          "⚠️ Δεν μπόρεσα να επικοινωνήσω με το City4All AI.";
+
+      }
+
+    }
+
+
+    /*
+     * ====================================================
+     * PUBLIC HELPER
+     * ====================================================
+     *
+     * This allows a future custom text/voice UI to call
+     * exactly the same AI pipeline.
+     */
+
+    window.city4allAsk =
+      sendToCity4AllAI;
+
+
+    /*
+     * ====================================================
+     * RESULT CARDS
+     * ====================================================
+     */
+
+    function renderResults(
+      features
+    ) {
+
+      resultsList.innerHTML =
+        "";
+
+      resultsCount.textContent =
+        `${features.length} σημείο${features.length === 1 ? "" : "α"} βρέθηκε${features.length === 1 ? "" : "καν"} ` +
+        "στο City4All";
+
+
+      features.forEach(
+        (feature, index) => {
+
+          const attributes =
+            feature.attributes || {};
+
+
+          const card =
+            document.createElement(
+              "button"
+            );
+
+
+          card.type =
+            "button";
+
+
+          card.className =
+            "result-card";
+
+
+          const name =
+            attributes.field_2 ||
+            attributes.name ||
+            "Σημείο City4All";
+
+
+          const type =
+            attributes.field_3 ||
+            "Καταχώριση";
+
+
+          const accessibility =
+            attributes.field_4 ||
+            "Δεν υπάρχουν διαθέσιμες λεπτομέρειες προσβασιμότητας.";
+
+
+          const area =
+            attributes.field_9 ||
+            attributes.dimos ||
+            "";
+
+
+          card.innerHTML = `
+
+            <div class="result-name">
+              ${escapeHTML(name)}
+            </div>
+
+            <div class="result-type">
+              ${escapeHTML(type)}
+            </div>
+
+            <div class="result-accessibility">
+              ♿ ${escapeHTML(accessibility)}
+            </div>
+
+            ${
+              area
+                ? `
+                  <div class="result-area">
+                    📍 ${escapeHTML(area)}
+                  </div>
+                `
+                : ""
+            }
+
+            <span class="result-route">
+              🧭 Επιλογή & διαδρομή
+            </span>
+
+          `;
+
+
+          card.addEventListener(
+            "click",
+            () => {
+
+              selectFeature(
+                feature,
+                index
+              );
+
+            }
+          );
+
+
+          resultsList.appendChild(
+            card
+          );
+
+        }
+      );
+
+
+      resultsPanel.style.display =
+        "block";
+
+    }
+
+
+    /*
+     * ====================================================
+     * SELECT RESULT
+     * ====================================================
+     */
+
+    async function selectFeature(
+      feature,
+      index = 0
+    ) {
+
+      const geometry =
+        feature.geometry;
+
+
+      if (
+        !geometry ||
+        geometry.x == null ||
+        geometry.y == null
+      ) {
+
+        routeStatus.textContent =
+          "⚠️ Το συγκεκριμένο σημείο δεν έχει διαθέσιμη γεωμετρία.";
+
+        return;
+
+      }
+
+
+      selectedFeature =
+        feature;
+
+
+      destinationPoint =
+        new Point({
+
+          x:
+            geometry.x,
+
+          y:
+            geometry.y,
+
+          spatialReference:
+            geometry.spatialReference ||
+            {
+              wkid: 4326
+            }
+
+        });
+
+
+      setDestinationGraphic();
+
+
+      const attributes =
+        feature.attributes || {};
+
+
+      const name =
+        attributes.field_2 ||
+        attributes.name ||
+        "Σημείο City4All";
+
+
+      const type =
+        attributes.field_3 ||
+        "Σημείο";
+
+
+      selectedPlace.innerHTML = `
+
+        <strong>
+          📍 ${escapeHTML(name)}
+        </strong>
+
+        <span>
+          ${escapeHTML(type)}
+        </span>
+
+        <br>
+
+        <span>
+          Το σημείο επιλέχθηκε.
+          Μπορείς τώρα να ζητήσεις διαδρομή.
+        </span>
+
+      `;
+
+
+      routeButton.disabled =
+        false;
+
+
+      routeStatus.textContent =
+        "Πάτησε «Βρες διαδρομή» για να υπολογίσουμε τη διαδρομή από τη θέση σου.";
+
+
+      const view =
+        map.view;
+
+
+      if (view) {
+
+        await view.goTo({
+
+          target:
+            destinationPoint,
+
+          zoom:
+            Math.max(
+              view.zoom,
+              17
+            )
+
+        });
+
+      }
+
+
+      /*
+       * Automatically attempt location.
+       * We do not automatically calculate a route,
+       * because that should be an explicit user action.
+       */
+      getUserLocation(
+        false
+      );
+
+    }
+
+
+    /*
+     * ====================================================
+     * SHOW FEATURES ON MAP
+     * ====================================================
+     */
+
+    async function showFeaturesOnMap(
+      features
+    ) {
+
+      const view =
+        map.view;
+
+      if (
+        !view ||
+        !routeGraphicsLayer
+      ) {
+        return;
+      }
+
+
+      clearSearchGraphics();
+
+
+      const graphics =
+        features
+          .filter(
+            feature =>
+              feature.geometry &&
+              feature.geometry.x != null &&
+              feature.geometry.y != null
+          )
+          .map(
+            feature => {
+
+              const geometry =
+                new Point({
+
+                  x:
+                    feature.geometry.x,
+
+                  y:
+                    feature.geometry.y,
+
+                  spatialReference:
+                    feature.geometry.spatialReference ||
+                    {
+                      wkid: 4326
+                    }
+
+                });
+
+
+              return new Graphic({
+
+                geometry,
+
+                attributes:
+                  feature.attributes || {},
+
+                symbol: {
+
+                  type:
+                    "simple-marker",
+
+                  style:
+                    "circle",
+
+                  size:
+                    13,
+
+                  color:
+                    "#0b5cab",
+
+                  outline: {
+
+                    color:
+                      "#ffffff",
+
+                    width:
+                      2
+
+                  }
+
+                }
+
+              });
+
+            }
+          );
+
+
+      graphics.forEach(
+        graphic => {
+
+          routeGraphicsLayer.add(
+            graphic
+          );
+
+        }
+      );
+
+
+      if (graphics.length) {
+
+        const extent =
+          graphics
+            .map(
+              graphic =>
+                graphic.geometry
+            );
+
+
+        try {
+
+          await view.goTo(
+            extent
+          );
+
+        }
+        catch (error) {
+
+          console.warn(
+            "Could not zoom to results.",
+            error
+          );
+
+        }
+
+      }
+
+    }
+
+
+    /*
+     * ====================================================
      * MAP CLICK
-     * ==================================================
+     * ====================================================
      */
 
     map.addEventListener(
       "arcgisViewClick",
-      async event => {
+      async (event) => {
 
         try {
 
@@ -1120,6 +1742,7 @@
                 return (
                   graphic &&
                   graphic.geometry &&
+                  graphic.geometry.type === "point" &&
                   graphic.layer !==
                     routeGraphicsLayer
                 );
@@ -1137,16 +1760,28 @@
             hit.graphic;
 
 
-          if (
-            graphic.geometry.type !==
-              "point"
-          ) {
-            return;
-          }
+          /*
+           * Try to select the actual feature.
+           */
+          const attributes =
+            graphic.attributes || {};
 
 
-          selectDestination(
-            graphic
+          const geometry =
+            graphic.geometry;
+
+
+          const feature = {
+
+            attributes,
+
+            geometry
+
+          };
+
+
+          await selectFeature(
+            feature
           );
 
         }
@@ -1164,34 +1799,22 @@
 
 
     /*
-     * ==================================================
-     * SELECT DESTINATION
-     * ==================================================
+     * ====================================================
+     * DESTINATION GRAPHIC
+     * ====================================================
      */
 
-    async function selectDestination(
-      graphic
-    ) {
-
-      selectedFeature =
-        graphic;
-
-      destinationPoint =
-        graphic.geometry;
-
-
-      routingPanel.style.display =
-        "block";
-
-
-      /*
-       * Destination marker
-       */
+    function setDestinationGraphic() {
 
       if (
-        destinationGraphic &&
-        routeGraphicsLayer
+        !routeGraphicsLayer ||
+        !destinationPoint
       ) {
+        return;
+      }
+
+
+      if (destinationGraphic) {
 
         routeGraphicsLayer.remove(
           destinationGraphic
@@ -1215,10 +1838,10 @@
               "diamond",
 
             size:
-              16,
+              19,
 
             color:
-              "#1769aa",
+              "#0b5cab",
 
             outline: {
 
@@ -1226,7 +1849,7 @@
                 "#ffffff",
 
               width:
-                2
+                3
 
             }
 
@@ -1239,94 +1862,13 @@
         destinationGraphic
       );
 
-
-      const attributes =
-        graphic.attributes ||
-        {};
-
-
-      const name =
-        attributes.field_2 ||
-        attributes.name ||
-        attributes.Name ||
-        "Σημείο City4All";
-
-
-      const type =
-        attributes.field_3 ||
-        attributes.type ||
-        attributes.Type ||
-        "Σημείο προσβασιμότητας";
-
-
-      const accessibility =
-        attributes.field_4 ||
-        attributes.accessibility ||
-        "";
-
-
-      selectedPlace.innerHTML = `
-
-        <strong>
-          📍 ${escapeHTML(name)}
-        </strong>
-
-        <span>
-          ${escapeHTML(type)}
-        </span>
-
-        ${
-          accessibility
-            ? `
-              <br>
-              <span>
-                ♿ ${escapeHTML(accessibility)}
-              </span>
-            `
-            : ""
-        }
-
-      `;
-
-
-      routeButton.disabled =
-        false;
-
-      googleMapsButton.disabled =
-        false;
-
-
-      routeStatus.textContent =
-        "Το σημείο επιλέχθηκε. Μπορείς να ζητήσεις διαδρομή.";
-
-
-      await map.view.goTo({
-
-        target:
-          destinationPoint,
-
-        zoom:
-          Math.max(
-            map.view.zoom,
-            16
-          )
-
-      });
-
-
-      /*
-       * Try location silently
-       */
-
-      getUserLocation(false);
-
     }
 
 
     /*
-     * ==================================================
+     * ====================================================
      * USER LOCATION
-     * ==================================================
+     * ====================================================
      */
 
     function getUserLocation(
@@ -1338,7 +1880,7 @@
       ) {
 
         routeStatus.textContent =
-          "Ο browser δεν υποστηρίζει εντοπισμό θέσης.";
+          "Ο browser σου δεν υποστηρίζει εντοπισμό θέσης.";
 
         return;
 
@@ -1348,7 +1890,7 @@
       if (showMessage) {
 
         routeStatus.textContent =
-          "📍 Εντοπίζω τη θέση σου...";
+          "📍 Εντοπίζω την τρέχουσα θέση σου...";
 
       }
 
@@ -1360,8 +1902,7 @@
           const {
             latitude,
             longitude
-          } =
-            position.coords;
+          } = position.coords;
 
 
           userLocationPoint =
@@ -1394,17 +1935,13 @@
         error => {
 
           console.error(
-            "Geolocation:",
+            "Geolocation error:",
             error
           );
 
 
-          if (showMessage) {
-
-            routeStatus.textContent =
-              "Δεν μπόρεσα να εντοπίσω τη θέση σου. Έλεγξε τα permissions του browser.";
-
-          }
+          routeStatus.textContent =
+            "Δεν μπόρεσα να πάρω την τοποθεσία σου. Έλεγξε την άδεια Location στον browser.";
 
         },
 
@@ -1427,9 +1964,9 @@
 
 
     /*
-     * ==================================================
+     * ====================================================
      * USER LOCATION GRAPHIC
-     * ==================================================
+     * ====================================================
      */
 
     function addUserLocationGraphic() {
@@ -1466,10 +2003,10 @@
               "circle",
 
             size:
-              14,
+              15,
 
             color:
-              "#1769aa",
+              "#16a34a",
 
             outline: {
 
@@ -1494,9 +2031,9 @@
 
 
     /*
-     * ==================================================
+     * ====================================================
      * ROUTING
-     * ==================================================
+     * ====================================================
      */
 
     async function calculateRoute() {
@@ -1504,6 +2041,9 @@
       if (
         !destinationPoint
       ) {
+
+        routeStatus.textContent =
+          "Πρώτα επίλεξε ένα σημείο City4All.";
 
         return;
 
@@ -1515,9 +2055,11 @@
       ) {
 
         routeStatus.textContent =
-          "📍 Χρειάζομαι πρώτα την τοποθεσία σου.";
+          "📍 Χρειάζομαι την τοποθεσία σου για να υπολογίσω τη διαδρομή.";
 
-        getUserLocation(true);
+        getUserLocation(
+          true
+        );
 
         return;
 
@@ -1527,11 +2069,15 @@
       if (
         !ARCGIS_API_KEY ||
         ARCGIS_API_KEY ===
-          "YOUR_ARCGIS_API_KEY"
+          "REPLACE_WITH_YOUR_ARCGIS_API_KEY"
       ) {
 
-        routeStatus.innerHTML =
-          "⚠️ Πρόσθεσε το ArcGIS API Key σου με ενεργοποιημένο Routing.";
+        routeStatus.innerHTML = `
+
+          ⚠️ Δεν έχει μπει το ArcGIS API Key
+          στο <strong>ARCGIS_API_KEY</strong>.
+
+        `;
 
         return;
 
@@ -1541,20 +2087,22 @@
       routeButton.disabled =
         true;
 
-
       routeButton.textContent =
         "⏳ Υπολογίζω...";
 
 
       routeStatus.textContent =
-        "🧭 Υπολογίζω τη διαδρομή...";
+        "🧭 Υπολογίζω τη διαδρομή με ArcGIS Location Services...";
 
 
-      clearRoute();
+      clearRouteOnly();
 
 
       try {
 
+        /*
+         * Route stops.
+         */
         const stops =
           new FeatureSet({
 
@@ -1579,8 +2127,17 @@
           });
 
 
-        const params =
+        /*
+         * ArcGIS route parameters.
+         *
+         * The API key is supplied directly to the
+         * routing operation.
+         */
+        const routeParams =
           new RouteParameters({
+
+            apiKey:
+              ARCGIS_API_KEY,
 
             stops,
 
@@ -1593,19 +2150,27 @@
             returnStops:
               true,
 
+            returnBarriers:
+              false,
+
+            directionsLanguage:
+              "el",
+
             outputSpatialReference:
-              4326
+              {
+                wkid: 4326
+              }
 
           });
 
 
+        /*
+         * Solve route.
+         */
         const result =
           await route.solve(
-
-            "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World",
-
-            params
-
+            ROUTE_URL,
+            routeParams
           );
 
 
@@ -1616,7 +2181,7 @@
         ) {
 
           throw new Error(
-            "No route."
+            "Δεν βρέθηκε διαδρομή."
           );
 
         }
@@ -1631,72 +2196,83 @@
 
 
         /*
-         * Route line
+         * Make route visually obvious.
          */
+        routeGraphic.symbol = {
 
-        if (
+          type:
+            "simple-line",
+
+          color:
+            "#0b5cab",
+
+          width:
+            5,
+
+          style:
+            "solid"
+
+        };
+
+
+        routeGraphicsLayer.add(
           routeGraphic
-        ) {
-
-          routeGraphic.symbol = {
-
-            type:
-              "simple-line",
-
-            width:
-              5,
-
-            color:
-              "#1769aa",
-
-            style:
-              "solid"
-
-          };
+        );
 
 
-          routeGraphicsLayer.add(
-            routeGraphic
-          );
-
-        }
-
-
+        /*
+         * Route attributes.
+         */
         const attributes =
-          routeGraphic.attributes ||
-          {};
+          routeGraphic.attributes || {};
 
 
-        const miles =
+        const totalMiles =
           Number(
             attributes.Total_Miles ||
             0
           );
 
 
-        const kilometers =
-          miles *
+        const totalKilometers =
+          totalMiles *
           1.609344;
 
 
-        const minutes =
+        const travelMinutes =
           Number(
             attributes.Total_TravelTime ||
             0
           );
 
 
-        distanceElement.textContent =
-          kilometers > 0
-            ? formatDistance(
-                kilometers
-              )
-            : "—";
+        /*
+         * Distance.
+         */
+        if (
+          totalKilometers > 0
+        ) {
+
+          distanceElement.textContent =
+            formatDistance(
+              totalKilometers
+            );
+
+        }
+        else {
+
+          distanceElement.textContent =
+            "—";
+
+        }
 
 
+        /*
+         * Time.
+         */
         durationElement.textContent =
           formatDuration(
-            minutes
+            travelMinutes
           );
 
 
@@ -1704,26 +2280,35 @@
           "grid";
 
 
+        /*
+         * Directions.
+         */
         displayDirections(
           routeResult.directions
         );
 
 
         routeStatus.textContent =
-          "✅ Η διαδρομή υπολογίστηκε με ArcGIS Location Services.";
+          "✅ Η διαδρομή υπολογίστηκε με ArcGIS Routing.";
+
+
+        /*
+         * Zoom to route.
+         */
+        const view =
+          map.view;
 
 
         if (
-          routeGraphic.geometry
+          view &&
+          routeGraphic.geometry &&
+          routeGraphic.geometry.extent
         ) {
 
-          await map.view.goTo(
-
-            routeGraphic
-              .geometry
-              .extent
-              .expand(1.25)
-
+          await view.goTo(
+            routeGraphic.geometry.extent.expand(
+              1.25
+            )
           );
 
         }
@@ -1732,18 +2317,23 @@
       catch (error) {
 
         console.error(
-          "Routing error:",
+          "ROUTING ERROR:",
           error
         );
 
 
-        routeStatus.innerHTML =
-          `
-            ⚠️ Δεν μπόρεσα να υπολογίσω τη διαδρομή.
-            <br><br>
-            Έλεγξε ότι το ArcGIS API Key έχει
-            <strong>Location services → Routing</strong>.
-          `;
+        routeStatus.innerHTML = `
+
+          ⚠️ Δεν μπόρεσα να υπολογίσω
+          τη διαδρομή.
+
+          <br><br>
+
+          Έλεγξε στο ArcGIS ότι το API key έχει
+          ενεργοποιημένο το
+          <strong>Location services → Routing</strong>.
+
+        `;
 
       }
       finally {
@@ -1760,73 +2350,16 @@
 
 
     /*
-     * ==================================================
-     * GOOGLE MAPS
-     * ==================================================
-     */
-
-    googleMapsButton.addEventListener(
-      "click",
-      () => {
-
-        if (
-          !destinationPoint
-        ) {
-          return;
-        }
-
-
-        const latitude =
-          destinationPoint.latitude;
-
-
-        const longitude =
-          destinationPoint.longitude;
-
-
-        if (
-          !Number.isFinite(
-            latitude
-          ) ||
-          !Number.isFinite(
-            longitude
-          )
-        ) {
-          return;
-        }
-
-
-        const destination =
-          `${latitude},${longitude}`;
-
-
-        const url =
-          `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destination)}&travelmode=driving`;
-
-
-        window.open(
-          url,
-          "_blank",
-          "noopener,noreferrer"
-        );
-
-      }
-    );
-
-
-    /*
-     * ==================================================
+     * ====================================================
      * DIRECTIONS
-     * ==================================================
+     * ====================================================
      */
 
     function displayDirections(
       directions
     ) {
 
-      if (
-        !directions
-      ) {
+      if (!directions) {
 
         directionsElement.style.display =
           "none";
@@ -1841,9 +2374,7 @@
         [];
 
 
-      if (
-        !features.length
-      ) {
+      if (!features.length) {
 
         directionsElement.style.display =
           "none";
@@ -1861,8 +2392,7 @@
         (step, index) => {
 
           const attributes =
-            step.attributes ||
-            {};
+            step.attributes || {};
 
 
           const text =
@@ -1900,6 +2430,7 @@
               length !== null
                 ? `
                   <br>
+
                   <span style="color:#667085">
                     ${formatDirectionDistance(length)}
                   </span>
@@ -1925,12 +2456,12 @@
 
 
     /*
-     * ==================================================
+     * ====================================================
      * CLEAR ROUTE
-     * ==================================================
+     * ====================================================
      */
 
-    function clearRoute() {
+    function clearRouteOnly() {
 
       if (
         !routeGraphicsLayer
@@ -1939,19 +2470,19 @@
       }
 
 
+      /*
+       * Preserve user and destination markers.
+       */
       const graphics =
-        routeGraphicsLayer.graphics
-          .toArray();
+        routeGraphicsLayer.graphics.toArray();
 
 
       graphics.forEach(
         graphic => {
 
           if (
-            graphic !==
-              destinationGraphic &&
-            graphic !==
-              userGraphic
+            graphic !== userGraphic &&
+            graphic !== destinationGraphic
           ) {
 
             routeGraphicsLayer.remove(
@@ -1979,23 +2510,62 @@
 
 
     /*
-     * ==================================================
+     * ====================================================
+     * CLEAR SEARCH GRAPHICS
+     * ====================================================
+     */
+
+    function clearSearchGraphics() {
+
+      if (
+        !routeGraphicsLayer
+      ) {
+        return;
+      }
+
+
+      const graphics =
+        routeGraphicsLayer.graphics.toArray();
+
+
+      graphics.forEach(
+        graphic => {
+
+          if (
+            graphic !== userGraphic &&
+            graphic !== destinationGraphic
+          ) {
+
+            routeGraphicsLayer.remove(
+              graphic
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /*
+     * ====================================================
      * CLOSE ROUTING
-     * ==================================================
+     * ====================================================
      */
 
     closeRoute.addEventListener(
       "click",
       () => {
 
-        routingPanel.style.display =
-          "none";
-
-
-        clearRoute();
+        clearRouteOnly();
 
 
         destinationPoint =
+          null;
+
+
+        destinationGraphic =
           null;
 
 
@@ -2007,45 +2577,49 @@
           true;
 
 
-        googleMapsButton.disabled =
-          true;
-
-
         selectedPlace.innerHTML = `
 
           <strong>
             📍 Προορισμός
           </strong>
 
-          Επίλεξε ένα σημείο City4All.
+          Επίλεξε ένα σημείο από τα αποτελέσματα
+          ή κάνε κλικ σε ένα σημείο του χάρτη.
 
         `;
+
+
+        routeStatus.textContent =
+          "Η διαδρομή καθαρίστηκε.";
 
       }
     );
 
 
     /*
-     * ==================================================
+     * ====================================================
      * CLOSE RESULTS
-     * ==================================================
+     * ====================================================
      */
 
     closeResults.addEventListener(
       "click",
-      () => {
-
-        resultsPanel.style.display =
-          "none";
-
-      }
+      closeResultsPanel
     );
 
 
+    function closeResultsPanel() {
+
+      resultsPanel.style.display =
+        "none";
+
+    }
+
+
     /*
-     * ==================================================
+     * ====================================================
      * BUTTONS
-     * ==================================================
+     * ====================================================
      */
 
     routeButton.addEventListener(
@@ -2058,16 +2632,189 @@
       "click",
       () => {
 
-        getUserLocation(true);
+        getUserLocation(
+          true
+        );
 
       }
     );
 
 
     /*
-     * ==================================================
-     * FORMATTERS
-     * ==================================================
+     * ====================================================
+     * MAP HELP
+     * ====================================================
+     */
+
+    function showMapHelp() {
+
+      setTimeout(
+        () => {
+
+          mapHelp.classList.add(
+            "visible"
+          );
+
+
+          setTimeout(
+            () => {
+
+              mapHelp.classList.remove(
+                "visible"
+              );
+
+            },
+            4500
+          );
+
+        },
+        1000
+      );
+
+    }
+
+
+    /*
+     * ====================================================
+     * VOICE
+     * ====================================================
+     *
+     * This prepares the browser voice layer.
+     *
+     * SpeechRecognition is supported mainly by Chromium
+     * based browsers. SpeechSynthesis is more broadly
+     * supported.
+     */
+
+    window.city4allVoiceEnabled =
+      false;
+
+
+    window.city4allStartVoice =
+      function () {
+
+        const Recognition =
+          window.SpeechRecognition ||
+          window.webkitSpeechRecognition;
+
+
+        if (!Recognition) {
+
+          console.warn(
+            "Speech recognition is not supported by this browser."
+          );
+
+          return;
+
+        }
+
+
+        const recognition =
+          new Recognition();
+
+
+        recognition.lang =
+          "el-GR";
+
+
+        recognition.interimResults =
+          false;
+
+
+        recognition.continuous =
+          false;
+
+
+        recognition.onresult =
+          event => {
+
+            const transcript =
+              event.results[0][0].transcript;
+
+
+            if (
+              transcript
+            ) {
+
+              window.city4allVoiceEnabled =
+                true;
+
+
+              window.city4allAsk(
+                transcript
+              );
+
+            }
+
+          };
+
+
+        recognition.onerror =
+          error => {
+
+            console.error(
+              "Voice recognition error:",
+              error
+            );
+
+          };
+
+
+        recognition.start();
+
+      };
+
+
+    /*
+     * Text-to-speech.
+     */
+    function speakText(
+      text
+    ) {
+
+      if (
+        !("speechSynthesis" in window)
+      ) {
+        return;
+      }
+
+
+      window.speechSynthesis.cancel();
+
+
+      const utterance =
+        new SpeechSynthesisUtterance(
+          text
+        );
+
+
+      utterance.lang =
+        "el-GR";
+
+
+      utterance.rate =
+        1;
+
+
+      utterance.pitch =
+        1;
+
+
+      window.speechSynthesis.speak(
+        utterance
+      );
+
+    }
+
+
+    window.city4allSpeak =
+      speakText;
+
+
+    /*
+     * ====================================================
+     * HELPERS
+     * ====================================================
      */
 
     function formatDistance(
@@ -2153,7 +2900,9 @@
     ) {
 
       const number =
-        Number(value);
+        Number(
+          value
+        );
 
 
       if (
@@ -2167,6 +2916,10 @@
       }
 
 
+      /*
+       * ArcGIS directions normally provide the length
+       * in the route service's configured units.
+       */
       if (
         number < 1
       ) {
@@ -2194,29 +2947,24 @@
     ) {
 
       return String(
-        value || ""
+        value ?? ""
       )
-
         .replace(
           /&/g,
           "&amp;"
         )
-
         .replace(
           /</g,
           "&lt;"
         )
-
         .replace(
           />/g,
           "&gt;"
         )
-
         .replace(
           /"/g,
           "&quot;"
         )
-
         .replace(
           /'/g,
           "&#039;"
@@ -2226,12 +2974,22 @@
 
 
     /*
-     * ==================================================
-     * INITIALIZE
-     * ==================================================
+     * ====================================================
+     * INITIAL CHECKS
+     * ====================================================
      */
 
-    getUserLocation(false);
+    if (
+      ARCGIS_API_KEY ===
+      "REPLACE_WITH_YOUR_ARCGIS_API_KEY"
+    ) {
+
+      console.warn(
+        "City4All: Add your ArcGIS API key."
+      );
+
+    }
+
 
     console.log(
       "City4All AI frontend initialized."
